@@ -1,8 +1,15 @@
 import type { Express } from "express";
 import { ENV } from "./env";
 
+const STORAGE_PROXY_PATH = "/manus-storage/*";
+const FORGE_STORAGE_ENDPOINT = "v1/storage/presign/get";
+
+function normalizeBaseUrl(url: string): string {
+  return url.replace(/\/+$/, "") + "/";
+}
+
 export function registerStorageProxy(app: Express) {
-  app.get("/manus-storage/*", async (req, res) => {
+  app.get(STORAGE_PROXY_PATH, async (req, res) => {
     const key = (req.params as Record<string, string>)[0];
     if (!key) {
       res.status(400).send("Missing storage key");
@@ -16,8 +23,8 @@ export function registerStorageProxy(app: Express) {
 
     try {
       const forgeUrl = new URL(
-        "v1/storage/presign/get",
-        ENV.forgeApiUrl.replace(/\/+$/, "") + "/",
+        FORGE_STORAGE_ENDPOINT,
+        normalizeBaseUrl(ENV.forgeApiUrl),
       );
       forgeUrl.searchParams.set("path", key);
 
