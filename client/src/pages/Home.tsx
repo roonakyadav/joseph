@@ -1,6 +1,7 @@
 // APEX DESIGN: Account Archive 02 — a product-first FC Mobile account specimen, not a conventional landing-page stack.
 import { ArrowDown, ArrowUpRight, X } from "lucide-react";
 import { type PointerEvent, useEffect, useState } from "react";
+import { Link } from "wouter";
 import "./Home.css";
 
 const APEX_WHATSAPP_URL = "";
@@ -110,7 +111,8 @@ export default function Home() {
           <i>Active</i>
         </div>
         <div className="index-future">
-          {futureRoutes.map(([index, name, state]) => (
+          <Link href="/accounts" onClick={() => setMenuOpen(false)} className="index-live-route"><span>02</span><strong>Accounts</strong><p>Development catalog</p><i>Open</i></Link>
+          {futureRoutes.slice(1).map(([index, name, state]) => (
             <div key={name}><span>{index}</span><strong>{name}</strong><p>{state}</p></div>
           ))}
         </div>
@@ -162,9 +164,7 @@ export default function Home() {
             <p className="artifact-footnote">This is a platform visual concept, not a live account listing.</p>
           </article>
 
-          <button className="inspect-cue focus-ring" type="button" onClick={ScrollToProtocol}>
-            <span>Inspect the system</span><ArrowDown size={16} aria-hidden="true" />
-          </button>
+          <div className="hero-actions"><Link href="/accounts" className="explore-accounts focus-ring">Explore accounts <ArrowUpRight size={16} aria-hidden="true" /></Link><button className="inspect-cue focus-ring" type="button" onClick={ScrollToProtocol}><span>Inspect the system</span><ArrowDown size={16} aria-hidden="true" /></button></div>
         </section>
 
         <section className="inspection-flow" id="protocol" aria-labelledby="protocol-title">

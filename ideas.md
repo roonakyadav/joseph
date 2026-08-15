@@ -76,3 +76,6 @@ The mark is a **sharp, rising A-form built from two tapered pitch-green planes**
 - The preview terminal and every specimen card must include an explicit **Concept preview** or **Platform preview** label, so none can be misread as a live account listing.
 - The primary community action remains visibly configured as a future action unless a real APEX WhatsApp link is supplied in project configuration.
 - Corners are mostly sharp or minimally softened; high-radius cards and glass treatments are excluded.
+- Every account card, price-bearing specimen and account record must visibly declare **Concept preview**, **Development record**, or **Verified live record**. Development data may never read as active verified inventory.
+- **APEX Pitch Green** is reserved for active availability, a primary action and one focal metric per viewport. Prices, secondary data, archive rails and decorative emphasis default to off-white or muted stone.
+- Catalog language uses index, archive and inspection vocabulary. Generic marketplace wording is deferred until a genuine seller-contact or purchase flow is live.

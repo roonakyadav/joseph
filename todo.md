@@ -9,3 +9,15 @@
 - [x] Validate 360, 375, 390, and 412px mobile layouts before testing desktop expansion at 768–1920px.
 - [x] Run type, production-build, console, image, and overflow checks; complete final visual review.
 - [x] Save and deliver the visual-refinement checkpoint.
+
+# APEX Account Discovery
+
+- [x] Finish reviewing the complete account-discovery brief and record the non-negotiable product constraints.
+- [x] Audit the current route and data architecture, then define a presentation-independent Account model.
+- [ ] Generate distinct concept-only account product imagery and persistent UI states needed for the catalog.
+- [x] Build the `/accounts` route around compact catalog entry, search, quick filters, sorting, and a touch-native filter sheet.
+- [x] Create custom APEX account cards with deliberate available, sold, skeleton, missing-image, no-data, and no-results states.
+- [x] Build `/accounts/[account-id]` as a compact inspection record with an honest seller-contact configuration state; the full detail surface remains intentionally out of scope.
+- [x] Connect Home and catalog navigation without breaking the established Account Archive header language.
+- [x] Validate search, filters, sorting, card actions, detail route, and 360/375/390/412px layouts before desktop expansion.
+- [x] Run production checks, visual review, checkpoint, and delivery.
