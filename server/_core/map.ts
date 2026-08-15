@@ -18,6 +18,10 @@ type MapsConfig = {
   apiKey: string;
 };
 
+function normalizeBaseUrl(url: string): string {
+  return url.replace(/\/+$/, "");
+}
+
 function getMapsConfig(): MapsConfig {
   const baseUrl = ENV.forgeApiUrl;
   const apiKey = ENV.forgeApiKey;
@@ -29,7 +33,7 @@ function getMapsConfig(): MapsConfig {
   }
 
   return {
-    baseUrl: baseUrl.replace(/\/+$/, ""),
+    baseUrl: normalizeBaseUrl(baseUrl),
     apiKey,
   };
 }
