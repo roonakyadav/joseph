@@ -211,3 +211,20 @@
 
 - [x] Reduce only the rendered Thinking Nine SVG graphic to approximately half scale on mobile, preserving its centered position, labels, motion, colors, and desktop presentation.
 - [x] Verify the compact loader at mobile width, inspect the isolated diff, run relevant checks, and commit/push the change to `roonakyadav/joseph`.
+
+# Read-Only Admin Authentication Manual Test Guide
+
+- [x] Inspect the current login trigger, OAuth callback/session behavior, email-based administrator policy, protected admin routes, navigation, logout, and protected procedures without changing code, data, authentication, or policy.
+- [x] Deliver an exact manual checklist for authorized and unauthorized admin testing, including direct URLs and server-side authorization verification, without creating users, commits, or GitHub changes.
+
+# Manus Attribution Ownership Review
+
+- [x] Inspect the shipped application source and rendered routes to determine whether the visible bottom-right Manus attribution is application-owned or platform-controlled.
+- [x] No application-owned Manus attribution, badge, watermark, or fixed overlay is shipped by the current source; document that any external preview/public attribution cannot be removed from application code.
+- [x] Verify desktop and mobile public layouts show no application-owned attribution or leftover space; no application change exists, so a build, commit, and push are not applicable.
+
+# Complete GitHub Repository Synchronization
+
+- [x] Inspect the local project repository, remote configuration, and branch state to identify every current tracked change that must be synchronized.
+- [x] Validate the complete tracked project content, commit all current project changes, and push the resulting commit to the connected GitHub repository.
+- [x] Confirm the remote branch contains the complete current project state with a clean local working tree.
