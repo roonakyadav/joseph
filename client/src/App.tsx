@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { PublicMobileNav } from "./components/PublicMobileNav";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 
@@ -20,19 +21,22 @@ function ArchiveRouteLoading() {
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Suspense fallback={<ArchiveRouteLoading />}>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/accounts" component={Accounts} />
-        <Route path="/accounts/:slug" component={AccountRoute} />
-        <Route path="/proofs" component={Proofs} />
-        <Route path="/sell" component={Sell} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/admin/:section" component={Admin} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
+    <>
+      <Suspense fallback={<ArchiveRouteLoading />}>
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/accounts" component={Accounts} />
+          <Route path="/accounts/:slug" component={AccountRoute} />
+          <Route path="/proofs" component={Proofs} />
+          <Route path="/sell" component={Sell} />
+          <Route path="/admin" component={Admin} />
+          <Route path="/admin/:section" component={Admin} />
+          <Route path="/404" component={NotFound} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
+      <PublicMobileNav />
+    </>
   );
 }
 

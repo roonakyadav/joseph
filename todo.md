@@ -152,3 +152,32 @@
 
 - [x] Identify the intended Joseph repository, current GitHub linkage, and target branch for the verified Elite Traders checkpoint (`roonakyadav/joseph`, new `main` branch).
 - [x] Confirm the repository push target and synchronize the current verified project revision without changing application code.
+
+# Homepage Headline Copy
+
+- [x] Replace only the homepage hero headline with “Buy or sell FC Mobile accounts.” while preserving its current visual treatment and behavior.
+- [x] Verify the updated hero headline at the mobile viewport, run the relevant check/build, and push the requested isolated commit to `roonakyadav/joseph`.
+
+# Hero Label Simplification
+
+- [x] Replace only the homepage hero technical label with “FC MOBILE ACCOUNTS”, removing its green-highlight treatment and avoiding an empty mobile gap.
+- [x] Verify the simplified hero label at the mobile viewport, run the relevant check/build, and push the requested isolated commit to `roonakyadav/joseph`.
+
+# Mobile Archive Spacing
+
+- [x] Identify and correct only the underlying responsive layout rule causing excess mobile space between Featured in the archive and the Account Protocol section.
+- [x] Verify the narrowed mobile gap plus tablet/desktop behavior, run the relevant check/build, and push the requested isolated commit to `roonakyadav/joseph`.
+
+# Archive Whitespace Follow-up
+
+- [x] Re-measure and remove only any remaining excessive mobile whitespace below Featured in the archive and above Account Protocol, preserving the desktop composition. The existing `2.75rem` mobile rule yields an approximately 32–44px rendered boundary.
+- [x] Verify the adjusted mobile boundary plus tablet/desktop behavior, run the relevant check/build, and push the requested isolated commit to `roonakyadav/joseph`. No further code change was necessary beyond commit `76c6821`.
+
+# Mobile Bottom Navigation
+
+- [x] Review the complete mobile-bottom-navigation brief and current shared public navigation architecture without altering routes, commerce behavior, or desktop navigation.
+- [x] Replace the mobile Index overlay pattern with one shared, safe-area-aware floating bottom navigation containing only Home, Buy, Sell, and Proofs.
+- [x] Remove the now-unused mobile menu trigger, overlay interaction, and local state while retaining an appropriate desktop navigation model.
+- [x] Add responsive mobile public-content clearance so the floating navigation does not cover end-of-page content.
+- [x] Verify all four routes, active state, keyboard/touch behavior, safe-area handling, 320–414px layouts, tablet/desktop composition, and production build.
+- [ ] Save, commit, and push the approved mobile navigation implementation to `roonakyadav/joseph` without changing unrelated product functionality.
