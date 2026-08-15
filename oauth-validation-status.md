@@ -24,3 +24,9 @@ The authenticated admin lifecycle exercise is therefore deferred for this releas
 - Public account, detail, proof, and seller-intake routes remain available and database-backed without an admin session.
 
 To complete the deferred exercise later, open the application through its canonical Manus preview or published domain and ensure that exact origin is registered by the Manus OAuth project configuration. Do not test OAuth from a loopback-only preview origin.
+
+## Completed release validation
+
+The release was validated without creating marketplace records. The public `accounts.list` contract returns an empty published catalog as expected on a clean database, while an anonymous request to `admin.dashboard` returns HTTP 403. The automated suite also verifies that standard users cannot call inventory creation or account-media upload mutations, and that invalid, mismatched, or undersized image payloads are rejected before the storage helper is invoked.
+
+The interactive owner/admin lifecycle remains deliberately out of scope until the provider-side redirect allowlist accepts the canonical preview or published callback origin. That later exercise should use genuine operational records supplied by the store owner; it must not introduce fabricated listings, sale proofs, submissions, or customer information.

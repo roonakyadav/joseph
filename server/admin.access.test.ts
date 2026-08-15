@@ -51,4 +51,35 @@ describe("APEX operations authorization", () => {
       message: "You do not have required permission (10002)",
     });
   });
+
+  it("rejects inventory creation and media upload before any database or storage side effect for a standard user", async () => {
+    const caller = appRouter.createCaller(createUserContext("user"));
+    const account = {
+      slug: "protected-mutation-test",
+      title: "Protected mutation test",
+      ovr: 100,
+      price: 100,
+      currency: "USD",
+      status: "available" as const,
+      lifecycle: "draft" as const,
+      coins: 0,
+      gems: 0,
+      fcPoints: 0,
+      rank: "Rank 1",
+      formation: "4-3-3",
+      keyPlayers: ["Test Player"],
+      description: "A valid protected mutation payload used only to test authorization.",
+      featured: false,
+      sellerWhatsapp: null,
+    };
+    const image = {
+      dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB",
+      mimeType: "image/png" as const,
+      name: "protected.png",
+      alt: "Protected mutation test image",
+    };
+
+    await expect(caller.admin.accounts.create(account)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.admin.accounts.addMedia({ id: "acct_test", image, isPrimary: true, sortOrder: 0 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
 });

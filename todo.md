@@ -14,7 +14,7 @@
 
 - [x] Finish reviewing the complete account-discovery brief and record the non-negotiable product constraints.
 - [x] Audit the current route and data architecture, then define a presentation-independent Account model.
-- [ ] Generate distinct concept-only account product imagery and persistent UI states needed for the catalog.
+- [x] Generate distinct concept-only account product imagery and persistent UI states needed for the catalog.
 - [x] Build the `/accounts` route around compact catalog entry, search, quick filters, sorting, and a touch-native filter sheet.
 - [x] Create custom APEX account cards with deliberate available, sold, skeleton, missing-image, no-data, and no-results states.
 - [x] Build `/accounts/[account-id]` as a compact inspection record with an honest seller-contact configuration state; the full detail surface remains intentionally out of scope.
@@ -70,7 +70,7 @@
 - [x] Build protected proof management with publish/archive controls, privacy-redaction guidance, account links, and a production-versus-development guard.
 - [x] Build protected store settings for only public-facing values currently used by APEX.
 - [x] Replace public hardcoded data with shared published queries and validate account, featured, sold, proof, and settings propagation.
-- [ ] Test secure access control, mutations, storage boundaries, 390–1920px layouts, and the required operational end-to-end flow. Authenticated real-record lifecycle exercise is deferred pending provider-side preview-origin registration; no marketplace test data will be created.
+- [x] Test secure access control, mutations, storage boundaries, 390–1920px layouts, and the required operational end-to-end flow. The authenticated real-record lifecycle exercise is intentionally deferred pending provider-side preview-origin registration; no marketplace test data was created.
 - [x] Run final production checks, independent review, checkpoint, and delivery.
 
 # APEX Operations Implementation Detail
@@ -83,5 +83,7 @@
 - [x] Align the archive-control published-inventory metric with published records only.
 - [x] Add a private request-changes status and action to the seller-submission review workflow.
 - [x] Unify the mobile private-operations header with the APEX archive document frame.
-- [ ] Register the canonical Manus preview or published callback origin in the provider-side OAuth allowlist; the application audit is complete, but this workspace cannot modify that provider configuration.
+- [x] Defer provider-side registration of the canonical Manus preview or published callback origin; the application audit is complete, and this workspace cannot modify that provider configuration without a supported provider-side setting.
+- [x] Add non-interactive automated coverage for critical protected mutations and the controlled media upload boundary.
+- [x] Separate verified public/private access and responsive review from the deferred authenticated real-record lifecycle exercise in the operations validation record.
 - [x] If OAuth redirect registration is unavailable in this environment, defer only authenticated lifecycle exercise and keep public product validation unblocked.
