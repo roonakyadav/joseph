@@ -64,7 +64,7 @@ function ProofCard({ proof, index, onOpen }: { proof: ProofRecord; index: number
       <span className="proof-image-wash" aria-hidden="true" />
       <span className="proof-image-label">Privacy-reviewed record</span><span className="proof-expand"><Expand size={16} /> Inspect</span>
     </button>
-    <div className="proof-card-meta"><div className="proof-meta-primary"><span>Type</span><strong>{proofKindLabel[proof.kind]}</strong></div>{proof.accountSlug && <div className="proof-meta-account"><span>Account</span><Link href={`/accounts/${proof.accountSlug}`} className="focus-ring">View listing{proof.ovr ? <em>{proof.ovr} OVR</em> : null}</Link></div>}</div>
+    <div className="proof-card-meta"><div className="proof-meta-primary"><span>Type</span><strong>{proofKindLabel[proof.kind]}</strong></div>{proof.accountSlug ? <div className="proof-meta-account"><span>Account</span><Link href={`/accounts/${proof.accountSlug}`} className="focus-ring">View account record{proof.ovr ? <em>{proof.ovr} OVR</em> : null}</Link></div> : proof.accountId ? <div className="proof-meta-account"><span>Account</span><strong className="proof-account-archived">Archived account reference{proof.ovr ? <em>{proof.ovr} OVR</em> : null}</strong></div> : null}</div>
     {proof.caption && <p className="proof-caption">{proof.caption}</p>}
     <p className="proof-disclosure"><i /> Privacy-reviewed published proof record.</p>
   </article>;

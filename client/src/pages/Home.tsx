@@ -121,7 +121,7 @@ export default function Home() {
           <div className="hero-wording" data-reveal>
             <p className="hero-pretitle">Account ownership, made legible.</p>
             <h1 id="hero-title">Inspect your next <span>FC Mobile</span> account.</h1>
-            <p className="hero-intro">APEX presents a direct account marketplace around the squad itself—not generic listings, noise, or guesswork.</p>
+            <p className="hero-intro">APEX presents a direct account archive around the squad itself—not generic listings, noise, or guesswork.</p>
           </div>
 
           <article
@@ -156,7 +156,7 @@ export default function Home() {
             <p className="artifact-footnote">This archive visual is an interface specimen, not a live account listing.</p>
           </article>
 
-          <div className="hero-actions"><Link href="/accounts" className="explore-accounts focus-ring">Explore accounts <ArrowUpRight size={16} aria-hidden="true" /></Link><button className="inspect-cue focus-ring" type="button" onClick={ScrollToProtocol}><span>Inspect the system</span><ArrowDown size={16} aria-hidden="true" /></button></div>
+          <div className="hero-actions"><Link href="/accounts" className="explore-accounts focus-ring">Explore accounts <ArrowUpRight size={16} aria-hidden="true" /></Link><Link href="/sell" className="inspect-cue focus-ring"><span>Submit an account</span><ArrowDown size={16} aria-hidden="true" /></Link></div>
         </section>
 
         <section className="featured-index" aria-labelledby="featured-title">
@@ -213,7 +213,7 @@ export default function Home() {
       <footer className="apex-footer">
         <div className="footer-brand"><APEXMark /><span>APEX</span></div>
         <p className="micro-label">FC Mobile account archive / Public index</p>
-        <p>© {new Date().getFullYear()} APEX. Published record service.</p>
+        <p>© {new Date().getFullYear()} APEX. Independent public record service; not affiliated with EA or EA SPORTS.</p>
       </footer>
 
       {introVisible && (
@@ -225,7 +225,7 @@ export default function Home() {
             <div className="welcome-copy">
               <p className="eyebrow welcome-sequence-one">001 / Welcome to APEX</p>
               <h2 id="welcome-title" className="welcome-sequence-two">Your account,<br /><span>in focus.</span></h2>
-              <p className="welcome-description welcome-sequence-three">A direct FC Mobile account marketplace built around squad visibility, ownership and clarity.</p>
+              <p className="welcome-description welcome-sequence-three">A direct FC Mobile account archive built around squad visibility, ownership and clarity.</p>
               <button type="button" className="enter-button focus-ring welcome-sequence-four" onClick={dismissIntro}>Enter APEX <ArrowUpRight size={17} /></button>
             </div>
             <p className="welcome-foot micro-label">APEX / Public account archive</p>

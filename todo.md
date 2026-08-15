@@ -117,3 +117,21 @@
 - [x] Preserve original publication and sold timestamps across routine account edits, rather than resetting lifecycle history.
 - [x] Require a valid public primary image before an account record can be published, and verify optional proof-account links.
 - [x] Restrict the community setting to a safe HTTPS WhatsApp destination and retain safe media ownership checks on private mutations.
+
+# Resubmitted Revision Application
+
+- [x] Review the resubmitted APEX revision and translate each applicable requirement into a verified product change.
+- [x] Perform the required first-time visitor journey at 390px across landing, account discovery, a published record, gallery, specs, and WhatsApp without inspecting implementation details. Published-record, gallery, and configured WhatsApp validation remain explicitly deferred until genuine inventory exists.
+- [x] Establish and verify the public CTA hierarchy: account discovery and account inquiry primary; proofs and community secondary; navigation tertiary.
+- [x] Review and document account-detail inquiry/information hierarchy, account-card/proof continuity, seller guidance, and mobile drawer behavior; refine only evidence-backed friction while retaining genuine-record-dependent actions as deferred.
+- [x] Complete and record a focused final UX hardening pass covering interaction feedback, loading/error/empty states, typography/spacing consistency, footer utility, accessibility, and performance after the latest homepage and catalogue changes.
+- [x] Add a concise public-footer independence disclaimer without introducing unsupported commercial claims.
+- [x] Remove unsupported “verified” language from account-detail price and related-record treatments.
+- [x] Add evidence-backed mobile archive-index drawer focus return, Escape dismissal, focus containment, scroll locking, and an explicit backdrop.
+- [x] Raise the archive-index trigger and close control to a 44px minimum touch target.
+- [x] Show a non-clickable archived account reference on proof records when the related account is no longer publicly reachable.
+- [x] Replace the remaining homepage marketplace phrasing with accurate controlled-archive language, including the welcome overlay.
+- [x] Reverify the buyer, trust-focused buyer, and seller journey record against the final public routes, explicitly retaining the genuine-record-dependent steps as deferred.
+- [x] Make the seller submission route directly discoverable from the homepage hero without competing with the buyer-first primary action.
+- [x] Add a secondary account-index continuation to the empty proof archive so evidence review does not end the buyer journey.
+- [x] Verify the `/accounts` publication-led wording and the dossier-style no-record state after the interrupted patch recovery.

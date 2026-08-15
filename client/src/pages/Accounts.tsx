@@ -88,7 +88,7 @@ export default function Accounts() {
       <main className="accounts-main">
         <section className="catalog-intro" aria-labelledby="accounts-title">
           <div className="catalog-intro-rail"><p className="eyebrow"><i /> APEX / Account archive</p><span>Controlled public index</span></div>
-          <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect verified squad records, resource fields and price markers.</p></div><div className="catalog-count"><strong>{allAccounts.length}</strong><span>Public<br />records</span></div></div>
+          <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect published squad records, resource context and price detail.</p></div><div className="catalog-count"><strong>{allAccounts.length}</strong><span>Public<br />records</span></div></div>
           <div className="catalog-dossier-rail" aria-label="Catalog classification"><span>Index / 02</span><span>Classification / Published records</span><span>Account object first</span></div>
         </section>
 
@@ -112,7 +112,7 @@ export default function Accounts() {
           ) : recordsQuery.isError ? (
             <div className="catalog-empty"><span>00</span><h2>Archive unavailable</h2><p>The public account index could not be loaded right now. Please try again shortly.</p></div>
           ) : allAccounts.length === 0 ? (
-            <div className="catalog-empty"><span>00</span><h2>No public records</h2><p>Verified accounts will appear here when their archive record is published.</p></div>
+            <div className="catalog-empty catalog-empty--dossier"><div className="empty-dossier-head"><span>00 / Record pending</span><b>Index clear</b></div><div className="empty-dossier-specs" aria-label="Record fields awaiting publication"><span>OVR <b>—</b></span><span>Resources <b>—</b></span><span>State <b>Pending</b></span></div><h2>No public records</h2><p>Published account records appear here when they are ready to enter the public index.</p></div>
           ) : accounts.length === 0 ? (
             <div className="catalog-empty"><span>00</span><h2>No matches</h2><p>Nothing in the current account archive matches this search or filter set.</p><button type="button" className="empty-clear focus-ring" onClick={clearDiscovery}>Clear filters</button></div>
           ) : (
