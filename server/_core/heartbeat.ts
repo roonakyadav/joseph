@@ -99,19 +99,23 @@ const callForge = async <T>(
   return (await response.json()) as T;
 };
 
+const HTTP_STATUS_TO_TRPC_CODE: Record<number, TRPCError["code"]> = {
+  400: "BAD_REQUEST",
+  401: "UNAUTHORIZED",
+  403: "FORBIDDEN",
+  404: "NOT_FOUND",
+  409: "CONFLICT",
+  422: "BAD_REQUEST",
+  429: "TOO_MANY_REQUESTS",
+};
+
 const mapForgeError = (
   response: Response,
   detail: string,
   rpc: string
 ): TRPCError => {
   const status = response.status;
-  let code: TRPCError["code"] = "INTERNAL_SERVER_ERROR";
-  if (status === 401) code = "UNAUTHORIZED";
-  else if (status === 403) code = "FORBIDDEN";
-  else if (status === 404) code = "NOT_FOUND";
-  else if (status === 400 || status === 422) code = "BAD_REQUEST";
-  else if (status === 409) code = "CONFLICT";
-  else if (status === 429) code = "TOO_MANY_REQUESTS";
+  const code = HTTP_STATUS_TO_TRPC_CODE[status] ?? "INTERNAL_SERVER_ERROR";
   return new TRPCError({
     code,
     message: `Heartbeat ${rpc} failed (${status})${detail ? `: ${detail}` : ""}`,
