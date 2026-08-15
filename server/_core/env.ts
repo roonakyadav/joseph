@@ -1,4 +1,15 @@
-export const ENV = {
+interface EnvConfig {
+  appId: string;
+  cookieSecret: string;
+  databaseUrl: string;
+  oAuthServerUrl: string;
+  ownerOpenId: string;
+  isProduction: boolean;
+  forgeApiUrl: string;
+  forgeApiKey: string;
+}
+
+export const ENV: EnvConfig = {
   appId: process.env.VITE_APP_ID ?? "",
   cookieSecret: process.env.JWT_SECRET ?? "",
   databaseUrl: process.env.DATABASE_URL ?? "",
