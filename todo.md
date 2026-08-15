@@ -196,3 +196,13 @@
 - [x] Replace only the shared route-loading presentation with the reusable loader and clear destination-aware BUY, SELL, and PROOFS labels.
 - [x] Verify mobile/tablet/desktop behavior, transition rendering, reduced motion, memory-safe cleanup, route content clearance, tests, and production build.
 - [x] Save, commit, and push the verified Thinking Nine loader release to `roonakyadav/joseph`.
+
+# Accounts and Sell UI Simplification
+
+- [x] Remove only the visible technical metadata strip and “ACCOUNT OBJECT FIRST” copy from the Accounts page, with natural surrounding spacing and no change to account behavior.
+- [x] Change only the visible primary Sell CTA label from “OPEN ACCOUNT RECORD” to “FILL DETAILS”, preserving its behavior, position, and styling.
+- [x] Verify both changes on mobile without gaps or layout regressions, run relevant checks, and commit/push the isolated UI update.
+
+# Read-Only Route Architecture Report
+
+- [ ] Inspect and explain the existing `/accounts`, `/accounts/:slug`, `/admin`, and `/admin/:section` route hierarchy strictly from current source code, without modifying code during the investigation.

@@ -89,7 +89,6 @@ export default function Accounts() {
         <section className="catalog-intro" aria-labelledby="accounts-title">
           <div className="catalog-intro-rail"><p className="eyebrow"><i /> Elite Traders / Account archive</p><span>Controlled public index</span></div>
           <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect published squad records, resource context and price detail.</p></div><div className="catalog-count"><strong>{allAccounts.length}</strong><span>Public<br />records</span></div></div>
-          <div className="catalog-dossier-rail" aria-label="Catalog classification"><span>Index / 02</span><span>Classification / Published records</span><span>Account object first</span></div>
         </section>
 
         <section className="catalog-controls" aria-label="Account discovery controls">
