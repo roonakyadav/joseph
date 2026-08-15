@@ -5,12 +5,12 @@ export type BrowserImageUpload = {
   alt: string;
 };
 
-const acceptedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
-const maxBytes = 5 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]) as ReadonlySet<string>;
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 
 export async function imageFileToUpload(file: File, alt: string): Promise<BrowserImageUpload> {
-  if (!acceptedTypes.has(file.type)) throw new Error("Use a PNG, JPEG, or WebP image.");
-  if (file.size > maxBytes) throw new Error("Images must be no larger than 5 MB.");
+  if (!ACCEPTED_IMAGE_TYPES.has(file.type)) throw new Error("Use a PNG, JPEG, or WebP image.");
+  if (file.size > MAX_IMAGE_SIZE_BYTES) throw new Error("Images must be no larger than 5 MB.");
 
   const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
