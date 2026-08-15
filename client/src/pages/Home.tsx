@@ -114,7 +114,7 @@ export default function Home() {
       <main id="top">
         <section className="specimen-hero" aria-labelledby="hero-title">
           <div className="hero-rail" data-reveal>
-            <span className="eyebrow"><i /> Elite Traders / FC Mobile account archive</span>
+            <span className="eyebrow hero-label"><i /> FC MOBILE ACCOUNTS</span>
             <span className="micro-label">ID / A-001 · Global relay</span>
           </div>
 
