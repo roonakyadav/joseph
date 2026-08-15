@@ -228,3 +228,9 @@
 - [x] Inspect the local project repository, remote configuration, and branch state to identify every current tracked change that must be synchronized.
 - [x] Validate the complete tracked project content, commit all current project changes, and push the resulting commit to the connected GitHub repository.
 - [x] Confirm the remote branch contains the complete current project state with a clean local working tree.
+
+# Elite Traders Website Name and URL
+
+- [x] Inspect the application title configuration and current hosting-domain configuration for remaining apex-based naming.
+- [x] Update the application-controlled website title to Elite Traders and validate the configuration without changing unrelated brand or product behavior.
+- [ ] Document and complete, where supported, the safe hosted-domain change from the current apex-based URL prefix to an Elite Traders URL.
