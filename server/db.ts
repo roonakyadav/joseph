@@ -288,6 +288,21 @@ export async function getStoreSettings() {
   return records[0];
 }
 
+export const defaultStoreSettings = {
+  storeName: "APEX",
+  whatsappNumber: null,
+  whatsappCommunityUrl: null,
+  defaultCurrency: "USD",
+} as const;
+
+export function withDefaultStoreSettings<T extends { storeName: string; whatsappNumber: string | null; whatsappCommunityUrl: string | null; defaultCurrency: string }>(settings: T | undefined) {
+  return settings ?? defaultStoreSettings;
+}
+
+export async function getStoreSettingsOrDefault() {
+  return withDefaultStoreSettings(await getStoreSettings());
+}
+
 export async function upsertStoreSettings(values: Omit<typeof storeSettings.$inferInsert, "id">) {
   const db = await requireDb();
   await db

@@ -10,7 +10,7 @@ import {
   getAccountMediaById,
   getAdminProofById,
   getAdminSubmissionById,
-  getStoreSettings,
+  getStoreSettingsOrDefault,
   linkSubmissionToAccount,
   listAdminAccounts,
   listAdminProofs,
@@ -228,7 +228,7 @@ export const adminRouter = router({
     }),
   }),
   settings: router({
-    get: adminProcedure.query(() => getStoreSettings()),
+    get: adminProcedure.query(() => getStoreSettingsOrDefault()),
     update: adminProcedure.input(z.object({ storeName: z.string().trim().min(2).max(160), whatsappNumber: z.string().trim().max(64).nullable().optional(), whatsappCommunityUrl: whatsappCommunityUrl.nullable().optional(), defaultCurrency: z.string().trim().min(3).max(8) })).mutation(({ input }) => {
       return upsertStoreSettings({ ...input, whatsappNumber: input.whatsappNumber || null, whatsappCommunityUrl: input.whatsappCommunityUrl || null });
     }),

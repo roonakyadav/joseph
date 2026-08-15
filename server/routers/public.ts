@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   createSellerSubmission,
   getPublishedAccountBySlug,
-  getStoreSettings,
+  getStoreSettingsOrDefault,
   listFeaturedAccounts,
   listPublishedAccounts,
   listPublishedProofs,
@@ -39,15 +39,7 @@ export const proofsRouter = router({
 });
 
 export const settingsRouter = router({
-  getPublic: publicProcedure.query(async () => {
-    const settings = await getStoreSettings();
-    return settings ?? {
-      storeName: "APEX",
-      whatsappNumber: null,
-      whatsappCommunityUrl: null,
-      defaultCurrency: "USD",
-    };
-  }),
+  getPublic: publicProcedure.query(() => getStoreSettingsOrDefault()),
 });
 
 export const submissionsRouter = router({

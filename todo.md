@@ -135,3 +135,5 @@
 - [x] Make the seller submission route directly discoverable from the homepage hero without competing with the buyer-first primary action.
 - [x] Add a secondary account-index continuation to the empty proof archive so evidence review does not end the buyer journey.
 - [x] Verify the `/accounts` publication-led wording and the dossier-style no-record state after the interrupted patch recovery.
+- [x] Fix the clean-database `/admin/settings` query so `admin.settings.get` always returns defined data and does not trigger a React Query undefined-data error.
+- [x] Add focused regression coverage for the admin settings default/fallback contract.
