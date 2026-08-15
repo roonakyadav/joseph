@@ -34,3 +34,15 @@
 - [x] Add a compact related-account continuation module with data-derived suggestions.
 - [x] Validate normal, sold, missing, gallery, lightbox, WhatsApp, and 360/375/390/412px flows before desktop expansion.
 - [x] Run final build, visual review, checkpoint, and delivery.
+
+# APEX Sale Proofs Archive
+
+- [x] Finish reviewing the complete proof-archive brief and document the non-fabrication, privacy, and publishing rules.
+- [x] Define a presentation-independent Proof model that keeps development sample content separate from authentic published proof.
+- [x] Prepare development-only proof assets that are unmistakably labelled and contain no customer, payment, transaction, or personal data.
+- [x] Add the `/proofs` route and connect it to Home and APEX navigation without breaking direct URL or browser-history behavior.
+- [x] Build the mobile-first documentary proof archive with image-led evidence cards and an ethical empty state.
+- [x] Implement proof-to-account linking only where a linked account remains publicly reachable.
+- [x] Build an accessible fullscreen proof viewer with keyboard, touch, focus, zoom, lock-scroll, and reduced-motion support.
+- [x] Validate development, empty, missing-image, related-account, viewer, and 360/375/390/412px mobile states before desktop expansion.
+- [x] Run production checks, visual review, checkpoint, and delivery.

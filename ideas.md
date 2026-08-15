@@ -82,3 +82,7 @@ The mark is a **sharp, rising A-form built from two tapered pitch-green planes**
 - Archived or sold records never use **APEX Pitch Green** for OVR, price, status, or primary emphasis; their dominant state language uses muted stone and off-white.
 - Every account-detail route reads as one continuous inspected dossier: major sections receive archive rails, index labels, registration marks, or stamped states rather than generic stacked-card rhythm.
 - Related account modules are treated as archive index entries; record ID, preview status, OVR and inspection language take priority over conventional recommendation styling.
+- Every archive surface carries the rising **A-form** as a functional inspection seal or controlled status identifier, not solely as a header mark.
+- Long evidence sequences deliberately alternate lead specimens, indexed entries, archive rails, stamps and registration marks instead of relying on uniform card stacking.
+- Display headlines retain intentional editorial line breaks and readable breathing room; Manrope’s intensity comes from scale and phrasing, never excessive compression.
+- Development and published proof surfaces use **privacy review** vocabulary. A sample remains a labelled, privacy-safe specimen until permissioned authentic material is supplied.

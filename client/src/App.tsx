@@ -7,6 +7,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Accounts from "./pages/Accounts";
 import AccountRoute from "./pages/AccountRoute";
+import Proofs from "./pages/Proofs";
 import Home from "./pages/Home";
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/accounts" component={Accounts} />
       <Route path="/accounts/:slug" component={AccountRoute} />
+      <Route path="/proofs" component={Proofs} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
