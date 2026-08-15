@@ -244,3 +244,11 @@
 - [x] Transform the complete protected Admin workspace, including dashboard, accounts, submissions, proofs, settings, forms, tables, dialogs, and status surfaces.
 - [x] Verify all public and protected routes at narrow mobile, tablet, and desktop sizes for contrast, focus visibility, overflow, navigation overlap, loader visibility, and unchanged functionality.
 - [x] Run full checks and tests, inspect staged diffs, commit and push each verified logical light-theme stage to `roonakyadav/joseph` without force-pushing.
+
+# Home Product-Specimen Image Panel Redesign
+
+- [x] Inspect the Home visual markup and styles for the hero squad image and quieter-market archive image, preserving current assets, copy, motion, routes, and layout structure.
+- [x] Redesign the hero FC Mobile squad visual as a sharp, high-contrast dark specimen inside a refined white/off-white technical frame with restrained green detail.
+- [x] Redesign the quieter-market archive visual as a distinct, high-contrast editorial product panel with a complementary light-frame treatment and controlled green technical accents.
+- [x] Verify both compositions at 360px, 390px, 430px, and desktop widths for image sharpness, hierarchy, intentional spacing, no horizontal overflow, and preserved behavior.
+- [ ] Run full validation, inspect the isolated diff, checkpoint, commit, and push the verified visual-panel redesign to `roonakyadav/joseph`.
