@@ -87,3 +87,33 @@
 - [x] Add non-interactive automated coverage for critical protected mutations and the controlled media upload boundary.
 - [x] Separate verified public/private access and responsive review from the deferred authenticated real-record lifecycle exercise in the operations validation record.
 - [x] If OAuth redirect registration is unavailable in this environment, defer only authenticated lifecycle exercise and keep public product validation unblocked.
+
+# Attached Requirements Application
+
+- [x] Review the newly attached APEX requirements and translate each applicable item into a verified product change.
+- [x] Create FINAL_AUDIT.md after reviewing every public and private route, shared state, failure state, and deployment concern.
+- [x] Resolve all identified P0 and P1 hardening issues and practical P2 polish issues without redesigning the product or adding unsupported commercial claims.
+- [x] Complete a mobile-first touch, navigation, WhatsApp conversion, search/filter/sort, forms, and responsive layout review across public routes.
+- [x] Audit account/proof/image data integrity, public claims, placeholder content, accessibility, error handling, security boundaries, and the APEX 404 experience.
+- [x] Implement supported technical SEO, route metadata, canonical/robots/sitemap assets, semantic content improvements, and image performance safeguards.
+- [x] Serve a host-derived XML sitemap containing only public stable routes and published account records.
+- [x] Verify lazy-loaded public, fallback, and protected routes after vendor chunking before closing the bundle-size warning task.
+- [x] Apply noindex route metadata to the private operations area and missing-record fallbacks.
+- [x] Implement privacy-conscious, non-sensitive product analytics using only the project’s supported infrastructure.
+- [x] Verify account-record open analytics sends only non-sensitive attributes and passes the final type/build checks.
+- [x] Complete final public/admin visual, performance, browser, and production-build QA; create FINAL_QA.md and LAUNCH_CHECKLIST.md.
+- [x] Verify non-home route splitting with a post-change production build and public/protected route checks before recording the payload improvement as complete.
+- [x] Replace the proof archive “being built” empty-state headline with a truthful no-published-records message.
+- [x] Correct the malformed HTML tail that exposes debug characters below public pages.
+- [x] Replace the generic light 404 with the APEX Account Archive fallback state.
+- [x] Remove raw error-stack disclosure from the client fallback and use a branded, non-sensitive recovery state.
+- [x] Replace remaining development-preview and build-stage labels in the public navigation with accurate live archive language.
+- [x] Replace stale build, future-listing, platform-preview, and configuration-pending copy on the live home experience, including non-destination index rows and concept labels.
+- [x] Remove public preview-query switches that expose development-only welcome, index, filter, and empty-state behavior.
+- [x] Remove the proof-viewer query preview switch from the public evidence archive.
+- [x] Remove the account media-viewer query preview switch from the public account-record route.
+- [x] Remove the seller-intake validation preview switch and track only successful, non-sensitive submission completion.
+- [x] Verify and remove any stray literal artifact between seller-form sections; source verification confirmed the apparent artifact was a line-number display boundary, not rendered JSX.
+- [x] Preserve original publication and sold timestamps across routine account edits, rather than resetting lifecycle history.
+- [x] Require a valid public primary image before an account record can be published, and verify optional proof-account links.
+- [x] Restrict the community setting to a safe HTTPS WhatsApp destination and retain safe media ownership checks on private mutations.

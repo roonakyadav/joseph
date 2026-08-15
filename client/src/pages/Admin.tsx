@@ -2,6 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import DashboardLayout from "@/components/DashboardLayout";
 import { startLogin } from "@/const";
 import { imageFileToUpload } from "@/lib/imageUpload";
+import { usePageMeta } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import {
   AlertTriangle,
@@ -348,6 +349,7 @@ function AdminWorkspace() {
 }
 
 export default function Admin() {
+  usePageMeta({ title: "Private operations — APEX", description: "Private APEX operations workspace.", path: "/admin", noIndex: true });
   const { user, loading } = useAuth();
   if (loading) return <div className="grid min-h-screen place-items-center bg-[#0e120f] text-[#f0f1ea]"><Loader2 className="h-5 w-5 animate-spin text-[#77d44d]" /></div>;
   if (!user) return <div className="grid min-h-screen place-items-center bg-[#0e120f] p-6 text-center text-[#f0f1ea]"><div className="max-w-md border border-[#f0f1ea]/15 bg-[#111611] p-7"><ShieldCheck className="mx-auto h-6 w-6 text-[#77d44d]" /><h1 className="mt-4 text-2xl font-semibold">Private APEX operations</h1><p className="mt-3 text-sm leading-6 text-[#aeb4aa]">Sign in to check whether your authenticated account has operations access.</p><div className="mt-6"><ActionButton onClick={() => startLogin()}>Sign in</ActionButton></div></div></div>;

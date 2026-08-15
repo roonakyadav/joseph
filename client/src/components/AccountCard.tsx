@@ -13,7 +13,7 @@ export function AccountCard({ account }: { account: AccountRecord }) {
     <article className={`account-card ${isSold ? "is-sold" : ""}`}>
       <Link href={`/accounts/${account.slug}`} className="account-card-link focus-ring" aria-label={`View ${account.title}, ${account.id}`}>
         <div className="account-card-image">
-          {!imageFailed ? <img src={account.image} alt={account.imageAlt} onError={() => setImageFailed(true)} /> : <div className="account-image-fallback"><span>Image unavailable</span><i /></div>}
+          {!imageFailed ? <img src={account.image} alt={account.imageAlt} loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : <div className="account-image-fallback"><span>Image unavailable</span><i /></div>}
           <div className="account-card-wash" />
           <div className="account-card-topline"><span className="dev-mark">Verified record</span><span className={`status-mark ${account.status}`}>{account.status}</span></div>
           <div className="account-ovr"><strong>{account.ovr}</strong><span>OVR</span></div>

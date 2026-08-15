@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# A canonical-domain sitemap should be added after the final public domain is assigned.

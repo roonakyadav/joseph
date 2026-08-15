@@ -3,12 +3,10 @@ import { ArrowDown, ArrowUpRight, X } from "lucide-react";
 import { type PointerEvent, useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { formatCurrency, formatQuantity, mapPublicAccount } from "@/data/accounts";
+import { trackApexEvent } from "@/lib/analytics";
+import { usePageMeta } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import "./Home.css";
-
-const futureRoutes = [
-  ["05", "Community", "Official channel"],
-];
 
 function APEXMark({ className = "" }: { className?: string }) {
   return <img className={`apex-mark ${className}`} src="/manus-storage/apex-mark_890b511d.png" alt="APEX" />;
@@ -20,10 +18,9 @@ function ScrollToProtocol() {
 }
 
 export default function Home() {
-  const welcomeMode = new URLSearchParams(window.location.search).get("welcome");
-  const indexPreview = new URLSearchParams(window.location.search).get("index") === "preview";
-  const [introVisible, setIntroVisible] = useState(() => Boolean(welcomeMode) || !window.sessionStorage.getItem("apex-entry-seen"));
-  const [menuOpen, setMenuOpen] = useState(indexPreview);
+  usePageMeta({ title: "APEX — FC Mobile account archive", description: "Inspect published FC Mobile account records, evidence, and configured contact paths.", path: "/" });
+  const [introVisible, setIntroVisible] = useState(() => !window.sessionStorage.getItem("apex-entry-seen"));
+  const [menuOpen, setMenuOpen] = useState(false);
   const [communityNote, setCommunityNote] = useState(false);
   const [artifactActive, setArtifactActive] = useState(false);
   const settingsQuery = trpc.settings.getPublic.useQuery();
@@ -32,12 +29,6 @@ export default function Home() {
   const communityUrl = settingsQuery.data?.whatsappCommunityUrl ?? "";
 
   useEffect(() => {
-    if (welcomeMode === "preview") return;
-    if (welcomeMode === "1") {
-      const timer = window.setTimeout(() => setIntroVisible(false), 3400);
-      return () => window.clearTimeout(timer);
-    }
-
     if (window.sessionStorage.getItem("apex-entry-seen")) {
       setIntroVisible(false);
       return;
@@ -49,7 +40,7 @@ export default function Home() {
     }, 3400);
 
     return () => window.clearTimeout(timer);
-  }, [welcomeMode]);
+  }, []);
 
   useEffect(() => {
     const revealables = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
@@ -94,7 +85,7 @@ export default function Home() {
           <span>APEX</span>
         </a>
         <div className="header-right">
-          <span className="header-build">Build / 02</span>
+          <span className="header-build">Archive / Live</span>
           <button className="index-trigger focus-ring" type="button" onClick={() => setMenuOpen(true)} aria-expanded={menuOpen} aria-controls="apex-index">
             <span className="index-dot" aria-hidden="true" /> Index <b>01</b>
           </button>
@@ -115,29 +106,27 @@ export default function Home() {
           <Link href="/accounts" onClick={() => setMenuOpen(false)} className="index-live-route"><span>02</span><strong>Accounts</strong><p>Public archive</p><i>Open</i></Link>
           <Link href="/sell" onClick={() => setMenuOpen(false)} className="index-live-route"><span>03</span><strong>Sell</strong><p>Submission protocol</p><i>Open</i></Link>
           <Link href="/proofs" onClick={() => setMenuOpen(false)} className="index-live-route"><span>04</span><strong>Proofs</strong><p>Evidence archive</p><i>Open</i></Link>
-          {futureRoutes.map(([index, name, state]) => (
-            <div key={name}><span>{index}</span><strong>{name}</strong><p>{state}</p></div>
-          ))}
+          {communityUrl && <a href={communityUrl} target="_blank" rel="noreferrer" onClick={() => trackApexEvent("community_open")} className="index-live-route"><span>05</span><strong>Community</strong><p>Official channel</p><i>Open</i></a>}
         </div>
-        <p className="index-note">Only live destinations open. The rest are shown as part of the platform map—not as incomplete navigation.</p>
+        <p className="index-note">Only active public destinations are indexed here.</p>
       </aside>
 
       <main id="top">
         <section className="specimen-hero" aria-labelledby="hero-title">
           <div className="hero-rail" data-reveal>
-            <span className="eyebrow"><i /> APEX / FC Mobile account platform</span>
+            <span className="eyebrow"><i /> APEX / FC Mobile account archive</span>
             <span className="micro-label">ID / A-001 · Global relay</span>
           </div>
 
           <div className="hero-wording" data-reveal>
             <p className="hero-pretitle">Account ownership, made legible.</p>
             <h1 id="hero-title">Inspect your next <span>FC Mobile</span> account.</h1>
-            <p className="hero-intro">APEX is building a direct account marketplace around the squad itself—not generic listings, noise, or guesswork.</p>
+            <p className="hero-intro">APEX presents a direct account marketplace around the squad itself—not generic listings, noise, or guesswork.</p>
           </div>
 
           <article
             className={`account-artifact ${artifactActive ? "is-active" : ""}`}
-            aria-label="APEX platform account concept specimen"
+            aria-label="APEX account archive visual specimen"
             data-reveal
             onPointerMove={handleArtifactPointerMove}
             onPointerLeave={resetArtifactTilt}
@@ -146,12 +135,12 @@ export default function Home() {
             onPointerCancel={() => setArtifactActive(false)}
           >
             <div className="artifact-topline">
-              <span><i className="live-pip" /> Platform specimen</span>
+              <span><i className="live-pip" /> Archive specimen</span>
               <span>Account / A-001</span>
             </div>
             <div className="artifact-image-shell">
               <img src="/manus-storage/apex-dossier-terminal_b763d73e.jpg" alt="Conceptual FC Mobile account squad specimen" />
-              <span className="artifact-stamp">CONCEPT<br />SPECIMEN</span>
+              <span className="artifact-stamp">ARCHIVE<br />SPECIMEN</span>
               <span className="artifact-coordinate coordinate-a">X 07 / Y 19</span>
               <span className="artifact-coordinate coordinate-b">GRID / 4–3–3</span>
               <span className="artifact-corner corner-one" />
@@ -159,12 +148,12 @@ export default function Home() {
               <div className="artifact-scan" aria-hidden="true" />
             </div>
             <dl className="account-readout">
-              <div><dt>OVR</dt><dd>—</dd><small>Preview value</small></div>
+              <div><dt>OVR</dt><dd>—</dd><small>Record field</small></div>
               <div><dt>Coins</dt><dd>—</dd><small>Resource field</small></div>
               <div><dt>Gems</dt><dd>—</dd><small>Resource field</small></div>
-              <div><dt>Status</dt><dd>Build</dd><small>Platform only</small></div>
+              <div><dt>Status</dt><dd>Index</dd><small>Archive overview</small></div>
             </dl>
-            <p className="artifact-footnote">This is a platform visual concept, not a live account listing.</p>
+            <p className="artifact-footnote">This archive visual is an interface specimen, not a live account listing.</p>
           </article>
 
           <div className="hero-actions"><Link href="/accounts" className="explore-accounts focus-ring">Explore accounts <ArrowUpRight size={16} aria-hidden="true" /></Link><button className="inspect-cue focus-ring" type="button" onClick={ScrollToProtocol}><span>Inspect the system</span><ArrowDown size={16} aria-hidden="true" /></button></div>
@@ -183,7 +172,7 @@ export default function Home() {
           </div>
           <div className="system-readout" data-reveal>
             <div className="readout-overline"><span>APEX / Account grammar</span><span>Phase 01</span></div>
-            <p className="readout-statement">A future listing will read like an inspection record: squad composition first, resources second, identity and context last.</p>
+            <p className="readout-statement">Every published listing reads like an inspection record: squad composition first, resources second, identity and context last.</p>
             <div className="grammar-lines">
               <div><span>01</span><strong>Squad</strong><p>Formation, key players, OVR</p></div>
               <div><span>02</span><strong>Resources</strong><p>Coins, gems, inventory</p></div>
@@ -198,23 +187,23 @@ export default function Home() {
             <span className="cut-image-label">Inventory<br />signal</span>
           </div>
           <div className="cut-copy" data-reveal>
-            <p className="eyebrow">003 / The platform, in progress</p>
+            <p className="eyebrow">003 / Archive protocol</p>
             <h2 id="platform-title">A quieter way to move through the market.</h2>
-            <p>Browse with context. Inspect with confidence. Connect directly when the platform is ready. Nothing here is presented as a live listing until it is actually live.</p>
+            <p>Browse with context. Inspect with confidence. Connect directly when a record is available. Nothing is presented as live inventory until it is published.</p>
           </div>
         </section>
 
         <section className="community-wire" aria-labelledby="community-title">
           <div className="wire-header" data-reveal><span className="eyebrow">004 / Community relay</span><span className="wire-line" /></div>
           <div className="wire-body" data-reveal>
-            <h2 id="community-title">Stay close to the build.</h2>
-            <p>Official community updates will run through this channel once it is configured.</p>
+            <h2 id="community-title">Stay close to the archive.</h2>
+            <p>Official community updates are shared through the configured channel.</p>
             {communityUrl ? (
-              <a className="apex-button primary focus-ring" href={communityUrl} target="_blank" rel="noreferrer">Open WhatsApp community <ArrowUpRight size={16} /></a>
+              <a className="apex-button primary focus-ring" href={communityUrl} target="_blank" rel="noreferrer" onClick={() => trackApexEvent("community_open")}>Open WhatsApp community <ArrowUpRight size={16} /></a>
             ) : (
               <>
-                <button className="apex-button pending focus-ring" type="button" onClick={showCommunityNote}>WhatsApp link pending <ArrowUpRight size={16} /></button>
-                <p className={`configuration-note ${communityNote ? "is-visible" : ""}`} role="status">Official community connection awaits administrator configuration.</p>
+                <button className="apex-button pending focus-ring" type="button" onClick={showCommunityNote}>Community channel unavailable <ArrowUpRight size={16} /></button>
+                <p className={`configuration-note ${communityNote ? "is-visible" : ""}`} role="status">The official community channel is not currently available. Please return to the archive later.</p>
               </>
             )}
           </div>
@@ -223,12 +212,12 @@ export default function Home() {
 
       <footer className="apex-footer">
         <div className="footer-brand"><APEXMark /><span>APEX</span></div>
-        <p className="micro-label">FC Mobile account platform / Build 02</p>
-        <p>© {new Date().getFullYear()} APEX. Platform preview.</p>
+        <p className="micro-label">FC Mobile account archive / Public index</p>
+        <p>© {new Date().getFullYear()} APEX. Published record service.</p>
       </footer>
 
       {introVisible && (
-        <section className={`welcome-layer ${welcomeMode === "preview" ? "is-preview" : ""}`} aria-labelledby="welcome-title">
+        <section className="welcome-layer" aria-labelledby="welcome-title">
           <div className="welcome-backdrop" aria-hidden="true"><img src="/manus-storage/apex-welcome-archive_31af4dfa.jpg" alt="" /></div>
           <div className="welcome-grid" aria-hidden="true" />
           <div className="welcome-shell">
@@ -239,7 +228,7 @@ export default function Home() {
               <p className="welcome-description welcome-sequence-three">A direct FC Mobile account marketplace built around squad visibility, ownership and clarity.</p>
               <button type="button" className="enter-button focus-ring welcome-sequence-four" onClick={dismissIntro}>Enter APEX <ArrowUpRight size={17} /></button>
             </div>
-            <p className="welcome-foot micro-label">APEX / Account platform in progress</p>
+            <p className="welcome-foot micro-label">APEX / Public account archive</p>
           </div>
         </section>
       )}

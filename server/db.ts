@@ -160,6 +160,12 @@ export async function createAccountMedia(values: typeof accountMedia.$inferInser
   return values;
 }
 
+export async function getAccountMediaById(id: string) {
+  const db = await requireDb();
+  const records = await db.select().from(accountMedia).where(eq(accountMedia.id, id)).limit(1);
+  return records[0];
+}
+
 export async function updateAccountMedia(
   id: string,
   values: Partial<Pick<typeof accountMedia.$inferInsert, "alt" | "isPrimary" | "sortOrder">>,

@@ -5,6 +5,8 @@ import { Link } from "wouter";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
 import { emptySellerSubmissionDraft, type SellerSubmissionDraft, type SellerContactMethod } from "@/data/sellerSubmission";
 import { imageFileToUpload } from "@/lib/imageUpload";
+import { trackApexEvent } from "@/lib/analytics";
+import { usePageMeta } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import "./Sell.css";
 
@@ -30,7 +32,7 @@ function validateDraft(draft: SellerSubmissionDraft, imageCount: number): Valida
 function FieldLabel({ children, required }: { children: string; required?: boolean }) { return <label className="sell-field-label">{children}<span>{required ? "Required" : "Optional"}</span></label>; }
 
 export default function Sell() {
-  const previewMode = new URLSearchParams(window.location.search).get("preview");
+  usePageMeta({ title: "Sell an FC Mobile account — APEX", description: "Submit an FC Mobile account record and supporting images for private APEX review. Submissions do not self-publish a listing.", path: "/sell" });
   const [draft, setDraft] = useState<SellerSubmissionDraft>(emptySellerSubmissionDraft);
   const [previews, setPreviews] = useState<PreviewFile[]>([]);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
@@ -42,13 +44,6 @@ export default function Sell() {
   const isDirty = useMemo(() => Object.values(draft).some((value) => value.trim()) || previews.length > 0, [draft, previews.length]);
 
   useEffect(() => () => previews.forEach((preview) => URL.revokeObjectURL(preview.url)), [previews]);
-  useEffect(() => {
-    if (previewMode === "validation") {
-      const previewErrors = validateDraft(emptySellerSubmissionDraft, 0);
-      setTouched({ sellerName: true, sellerContact: true, accountTitle: true, ovr: true });
-      setErrors(previewErrors);
-    }
-  }, [previewMode]);
   const createSubmission = trpc.submissions.create.useMutation();
   useEffect(() => {
     const warnBeforeLeave = (event: BeforeUnloadEvent) => { if (!isDirty || submitState === "accepted") return; event.preventDefault(); event.returnValue = ""; };
@@ -100,6 +95,7 @@ export default function Sell() {
         images,
       });
       setReference(result.id.slice(-8).toUpperCase());
+      trackApexEvent("seller_submission_complete", { image_count: previews.length, has_price_expectation: Boolean(draft.priceExpectation), contact_method: draft.contactMethod });
       setSubmitState("accepted");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {

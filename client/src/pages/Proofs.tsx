@@ -3,6 +3,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Expand, Minus, Plus, X } from "lu
 import { type PointerEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
+import { usePageMeta } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import "./Proofs.css";
 
@@ -59,7 +60,7 @@ function ProofCard({ proof, index, onOpen }: { proof: ProofRecord; index: number
     <div className="proof-card-top"><span>{index === 0 ? "Lead record" : "Indexed record"} / {proof.id.replace("#", "")}</span><span className="proof-card-sequence">Archive {String(index + 1).padStart(2, "0")}</span></div>
     <button type="button" className="proof-card-image focus-ring" onClick={onOpen} aria-label={`Open ${proof.id} evidence image`}>
       {imageState === "loading" && <i className="proof-image-skeleton" aria-hidden="true" />}
-      {imageState === "missing" ? <span className="proof-image-missing"><i /> Proof image unavailable</span> : <img src={proof.imageUrl} alt={proof.imageAlt} onLoad={() => setImageState("ready")} onError={() => setImageState("missing")} />}
+      {imageState === "missing" ? <span className="proof-image-missing"><i /> Proof image unavailable</span> : <img src={proof.imageUrl} alt={proof.imageAlt} loading="lazy" decoding="async" onLoad={() => setImageState("ready")} onError={() => setImageState("missing")} />}
       <span className="proof-image-wash" aria-hidden="true" />
       <span className="proof-image-label">Privacy-reviewed record</span><span className="proof-expand"><Expand size={16} /> Inspect</span>
     </button>
@@ -70,7 +71,8 @@ function ProofCard({ proof, index, onOpen }: { proof: ProofRecord; index: number
 }
 
 export default function Proofs() {
-  const [viewerIndex, setViewerIndex] = useState<number | null>(() => new URLSearchParams(window.location.search).get("viewer") === "1" ? 0 : null);
+  usePageMeta({ title: "Sale proof archive — APEX", description: "Review privacy-checked published FC Mobile handover and account evidence records.", path: "/proofs" });
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
   const revealFocus = useRef<HTMLButtonElement | null>(null);
   const proofsQuery = trpc.proofs.list.useQuery();
   const proofs = useMemo(() => proofsQuery.data ?? [], [proofsQuery.data]);
@@ -79,7 +81,7 @@ export default function Proofs() {
 
   return <div className="proofs-page"><div className="proofs-grid" aria-hidden="true" /><ApexCatalogHeader active="proofs" /><main className="proofs-main">
     <section className="proofs-intro" aria-labelledby="proofs-title"><div className="proofs-rail"><p className="eyebrow"><i /> APEX / Sale proofs</p><span>Proof archive</span></div><div className="proofs-intro-copy"><h1 id="proofs-title">See the record,<br /><em>in context.</em></h1><p>This archive presents privacy-reviewed handover material before seller contact.</p></div><aside className="proofs-development-note"><span className="apex-inspection-seal" aria-hidden="true"><img src="/manus-storage/apex-mark_890b511d.png" alt="" /></span><span>Archive status</span><strong>Published records</strong><p>{proofs.length ? "Each record shown is supplied for public viewing." : "No public evidence records have been published yet."}</p></aside></section>
-    <section className="proofs-archive" aria-labelledby="archive-title"><div className="archive-head"><div><span>001</span><p id="archive-title">Privacy review archive</p></div><p>{proofsQuery.isLoading ? "Loading archive" : proofs.length ? `${proofs.length} ${proofs.length === 1 ? "record" : "records"} in view` : "No published records"}</p></div>{proofsQuery.isLoading ? <div className="proof-list"><div className="proof-card proof-card--lead"><div className="proof-image-skeleton" /></div></div> : proofs.length ? <div className="proof-list">{proofs.map((proof, index) => <ProofCard proof={proof} index={index} key={proof.id} onOpen={() => { revealFocus.current = document.activeElement as HTMLButtonElement; setViewerIndex(index); }} />)}</div> : <section className="proof-empty"><span>00</span><h2>Proof archive is being built.</h2><p>Authentic handover records will appear here as transactions are completed and approved for public sharing.</p><Link href="/accounts" className="focus-ring">Browse accounts <ArrowLeft size={15} /></Link></section>}</section>
+    <section className="proofs-archive" aria-labelledby="archive-title"><div className="archive-head"><div><span>001</span><p id="archive-title">Privacy review archive</p></div><p>{proofsQuery.isLoading ? "Loading archive" : proofs.length ? `${proofs.length} ${proofs.length === 1 ? "record" : "records"} in view` : "No published records"}</p></div>{proofsQuery.isLoading ? <div className="proof-list"><div className="proof-card proof-card--lead"><div className="proof-image-skeleton" /></div></div> : proofs.length ? <div className="proof-list">{proofs.map((proof, index) => <ProofCard proof={proof} index={index} key={proof.id} onOpen={() => { revealFocus.current = document.activeElement as HTMLButtonElement; setViewerIndex(index); }} />)}</div> : <section className="proof-empty"><span>00</span><h2>No published proof records yet.</h2><p>Privacy-checked handover records appear here only after a completed transaction is approved for public sharing.</p><Link href="/accounts" className="focus-ring">Browse accounts <ArrowLeft size={15} /></Link></section>}</section>
     <section className="proofs-method" data-reveal aria-labelledby="method-title"><div><span>002</span><p id="method-title">Publication method</p></div><p>Only material approved for public display belongs in the published archive. Private contact details, payment references and other sensitive information are excluded or redacted before publishing.</p></section>
   </main>{viewerIndex !== null && proofs[viewerIndex] && <ProofViewer proofs={proofs} initialIndex={viewerIndex} onClose={closeViewer} />}</div>;
 }

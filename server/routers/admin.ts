@@ -7,6 +7,7 @@ import {
   createProof,
   getAdminAccountById,
   getAdminDashboardStats,
+  getAccountMediaById,
   getAdminProofById,
   getAdminSubmissionById,
   getStoreSettings,
@@ -53,7 +54,7 @@ const accountFields = z.object({
   sellerWhatsapp: z.string().trim().max(64).nullable().optional(),
 });
 
-function accountWriteValues(input: z.infer<typeof accountFields>) {
+function accountCreateValues(input: z.infer<typeof accountFields>) {
   const now = new Date();
   return {
     ...input,
@@ -63,6 +64,27 @@ function accountWriteValues(input: z.infer<typeof accountFields>) {
     soldAt: input.status === "sold" ? now : null,
   };
 }
+
+function accountUpdateValues(existing: Awaited<ReturnType<typeof requireAccount>>, input: z.infer<typeof accountFields>) {
+  const now = new Date();
+  return {
+    ...input,
+    formation: input.formation || null,
+    sellerWhatsapp: input.sellerWhatsapp || null,
+    // Publication/sale timestamps represent first entry into each current state; edits must not rewrite history.
+    publishedAt: existing.publishedAt ?? (input.lifecycle === "published" ? now : null),
+    soldAt: input.status === "sold" ? (existing.soldAt ?? now) : null,
+  };
+}
+
+const whatsappCommunityUrl = z.string().trim().url().max(512).refine(value => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && (url.hostname === "chat.whatsapp.com" || url.hostname.endsWith(".whatsapp.com"));
+  } catch {
+    return false;
+  }
+}, "Use a secure WhatsApp community URL.");
 
 async function requireAccount(id: string) {
   const record = await getAdminAccountById(id);
@@ -83,24 +105,27 @@ export const adminRouter = router({
     getById: adminProcedure.input(idInput).query(({ input }) => getAdminAccountById(input.id)),
     create: adminProcedure.input(accountFields).mutation(async ({ input }) => {
       const id = `acct_${randomUUID()}`;
-      return createAccount({ id, ...accountWriteValues(input) });
+      return createAccount({ id, ...accountCreateValues(input) });
     }),
     update: adminProcedure.input(idInput.extend({ data: accountFields.partial() })).mutation(async ({ input }) => {
       const existing = await requireAccount(input.id);
       const merged = accountFields.parse({ ...existing, ...input.data });
-      return updateAccount(input.id, accountWriteValues(merged));
+      return updateAccount(input.id, accountUpdateValues(existing, merged));
     }),
     publish: adminProcedure.input(idInput).mutation(async ({ input }) => {
-      await requireAccount(input.id);
-      return updateAccount(input.id, { lifecycle: "published", publishedAt: new Date() });
+      const account = await requireAccount(input.id);
+      if (!account.media.some(media => media.isPrimary)) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Set a primary account image before publishing this record." });
+      }
+      return updateAccount(input.id, { lifecycle: "published", publishedAt: account.publishedAt ?? new Date() });
     }),
     archive: adminProcedure.input(idInput).mutation(async ({ input }) => {
       await requireAccount(input.id);
       return updateAccount(input.id, { lifecycle: "archived", featured: false });
     }),
     setStatus: adminProcedure.input(idInput.extend({ status: z.enum(["available", "sold"]) })).mutation(async ({ input }) => {
-      await requireAccount(input.id);
-      return updateAccount(input.id, { status: input.status, soldAt: input.status === "sold" ? new Date() : null });
+      const account = await requireAccount(input.id);
+      return updateAccount(input.id, { status: input.status, soldAt: input.status === "sold" ? (account.soldAt ?? new Date()) : null });
     }),
     setFeatured: adminProcedure.input(idInput.extend({ featured: z.boolean() })).mutation(async ({ input }) => {
       const existing = await requireAccount(input.id);
@@ -130,6 +155,9 @@ export const adminRouter = router({
     }),
     updateMedia: adminProcedure.input(z.object({ id: z.string().trim().min(5).max(64), alt: z.string().trim().min(3).max(255).optional(), isPrimary: z.boolean().optional(), sortOrder: z.number().int().min(0).max(200).optional() })).mutation(async ({ input }) => {
       const { id, ...values } = input;
+      const media = await getAccountMediaById(id);
+      if (!media) throw new TRPCError({ code: "NOT_FOUND", message: "Account image not found." });
+      await requireAccount(media.accountId);
       await updateAccountMedia(id, values);
       return { success: true };
     }),
@@ -142,6 +170,9 @@ export const adminRouter = router({
       return getAdminAccountById(input.accountId);
     }),
     removeMedia: adminProcedure.input(idInput).mutation(async ({ input }) => {
+      const media = await getAccountMediaById(input.id);
+      if (!media) throw new TRPCError({ code: "NOT_FOUND", message: "Account image not found." });
+      await requireAccount(media.accountId);
       await removeAccountMedia(input.id);
       return { success: true };
     }),
@@ -162,7 +193,10 @@ export const adminRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Approve the seller submission before preparing an account draft." });
       }
       const id = `acct_${randomUUID()}`;
-      const account = await createAccount({ id, ...accountWriteValues(input.account) });
+      if (input.account.lifecycle !== "draft") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Converted submissions are prepared as drafts and must pass normal media review before publication." });
+      }
+      const account = await createAccount({ id, ...accountCreateValues({ ...input.account, lifecycle: "draft", featured: false }) });
       await linkSubmissionToAccount(input.submissionId, id);
       return account;
     }),
@@ -170,6 +204,7 @@ export const adminRouter = router({
   proofs: router({
     list: adminProcedure.query(() => listAdminProofs()),
     create: adminProcedure.input(z.object({ accountId: z.string().trim().min(5).max(64).nullable().optional(), ovr: z.number().int().min(1).max(200).nullable().optional(), image: imageUploadInput, kind: z.enum(["handover", "account-record", "confirmation"]), caption: z.string().trim().max(2000).nullable().optional(), isDevelopment: z.boolean().default(false) })).mutation(async ({ input }) => {
+      if (input.accountId) await requireAccount(input.accountId);
       const id = `proof_${randomUUID()}`;
       const stored = await storeValidatedImage(`proofs/${id}`, input.image);
       return createProof({ id, accountId: input.accountId ?? null, ovr: input.ovr ?? null, imageUrl: stored.url, fileKey: stored.key, imageAlt: input.image.alt, kind: input.kind, caption: input.caption ?? null, isDevelopment: input.isDevelopment, isPublished: false, lifecycle: "draft" });
@@ -177,6 +212,7 @@ export const adminRouter = router({
     update: adminProcedure.input(z.object({ id: z.string().trim().min(5).max(64), accountId: z.string().trim().min(5).max(64).nullable().optional(), ovr: z.number().int().min(1).max(200).nullable().optional(), imageAlt: z.string().trim().min(3).max(255).optional(), kind: z.enum(["handover", "account-record", "confirmation"]).optional(), caption: z.string().trim().max(2000).nullable().optional(), isDevelopment: z.boolean().optional() })).mutation(async ({ input }) => {
       const existing = await requireProof(input.id);
       const { id, ...values } = input;
+      if (values.accountId) await requireAccount(values.accountId);
       const isDevelopment = values.isDevelopment ?? existing.isDevelopment;
       if (isDevelopment) return updateProof(id, { ...values, isDevelopment: true, isPublished: false, lifecycle: "draft", publishedAt: null });
       return updateProof(id, values);
@@ -193,7 +229,7 @@ export const adminRouter = router({
   }),
   settings: router({
     get: adminProcedure.query(() => getStoreSettings()),
-    update: adminProcedure.input(z.object({ storeName: z.string().trim().min(2).max(160), whatsappNumber: z.string().trim().max(64).nullable().optional(), whatsappCommunityUrl: z.string().trim().url().max(512).nullable().optional(), defaultCurrency: z.string().trim().min(3).max(8) })).mutation(({ input }) => {
+    update: adminProcedure.input(z.object({ storeName: z.string().trim().min(2).max(160), whatsappNumber: z.string().trim().max(64).nullable().optional(), whatsappCommunityUrl: whatsappCommunityUrl.nullable().optional(), defaultCurrency: z.string().trim().min(3).max(8) })).mutation(({ input }) => {
       return upsertStoreSettings({ ...input, whatsappNumber: input.whatsappNumber || null, whatsappCommunityUrl: input.whatsappCommunityUrl || null });
     }),
   }),

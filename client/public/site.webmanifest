@@ -1,0 +1,9 @@
+{
+  "name": "APEX FC Mobile Account Archive",
+  "short_name": "APEX",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e120f",
+  "theme_color": "#0e120f",
+  "icons": [{ "src": "/manus-storage/apex-mark_890b511d.png", "sizes": "any", "type": "image/png" }]
+}

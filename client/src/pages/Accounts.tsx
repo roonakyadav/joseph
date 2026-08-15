@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
 import { AccountCard, AccountCardSkeleton } from "@/components/AccountCard";
 import { mapPublicAccount, type AccountStatus } from "@/data/accounts";
+import { trackApexEvent } from "@/lib/analytics";
+import { usePageMeta } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import "./Accounts.css";
 
@@ -27,15 +29,15 @@ function getStoredCatalogState(): StoredCatalogState {
 }
 
 export default function Accounts() {
-  const previewMode = new URLSearchParams(window.location.search).get("preview");
+  usePageMeta({ title: "Account records — APEX", description: "Browse published FC Mobile account records by OVR, availability, resource fields, and price marker.", path: "/accounts" });
   const [stored] = useState(getStoredCatalogState);
-  const [search, setSearch] = useState(previewMode === "empty" ? "unmatched development record" : stored.search ?? "");
+  const [search, setSearch] = useState(stored.search ?? "");
   const [quick, setQuick] = useState<QuickFilter>(stored.quick ?? "all");
   const [status, setStatus] = useState<"all" | AccountStatus>(stored.status ?? "all");
   const [minOvr, setMinOvr] = useState(stored.minOvr ?? "");
   const [maxPrice, setMaxPrice] = useState(stored.maxPrice ?? "");
   const [sort, setSort] = useState<SortOption>(stored.sort ?? "newest");
-  const [filtersOpen, setFiltersOpen] = useState(previewMode === "filters");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const recordsQuery = trpc.accounts.list.useQuery();
 
   useEffect(() => {
@@ -44,13 +46,15 @@ export default function Accounts() {
   }, []);
 
   useEffect(() => {
-    if (previewMode === "filters") setFiltersOpen(true);
-    if (previewMode === "empty") setSearch("unmatched development record");
-  }, [previewMode]);
-
-  useEffect(() => {
     window.sessionStorage.setItem(CATALOG_STATE_KEY, JSON.stringify({ search, quick, status, minOvr, maxPrice, sort }));
   }, [search, quick, status, minOvr, maxPrice, sort]);
+
+  useEffect(() => {
+    const queryLength = search.trim().length;
+    if (queryLength < 2) return;
+    const timer = window.setTimeout(() => trackApexEvent("catalog_search", { query_length: queryLength }), 700);
+    return () => window.clearTimeout(timer);
+  }, [search]);
 
   const allAccounts = useMemo(() => (recordsQuery.data ?? []).map(mapPublicAccount), [recordsQuery.data]);
   const accounts = useMemo(() => {
@@ -72,7 +76,7 @@ export default function Accounts() {
     });
   }, [allAccounts, search, quick, status, minOvr, maxPrice, sort]);
 
-  const clearDiscovery = () => { setSearch(""); setQuick("all"); setStatus("all"); setMinOvr(""); setMaxPrice(""); };
+  const clearDiscovery = () => { trackApexEvent("catalog_filter", { action: "clear" }); setSearch(""); setQuick("all"); setStatus("all"); setMinOvr(""); setMaxPrice(""); };
   const prepareAccountNavigation = () => window.sessionStorage.setItem(CATALOG_SCROLL_KEY, String(window.scrollY));
   const activeFilterCount = Number(status !== "all") + Number(Boolean(minOvr)) + Number(Boolean(maxPrice));
   const quickFilters: Array<[QuickFilter, string]> = [["all", "All records"], ["110", "110+ OVR"], ["115", "115+ OVR"], ["budget", "Under $50"], ["available", "Available"]];
@@ -89,16 +93,16 @@ export default function Accounts() {
         </section>
 
         <section className="catalog-controls" aria-label="Account discovery controls">
-          <form className="catalog-search" onSubmit={(event) => event.preventDefault()}>
-            <label htmlFor="account-search">Search the catalog</label>
+          <form className="catalog-search" onSubmit={(event) => { event.preventDefault(); if (search.trim()) trackApexEvent("catalog_search", { query_length: search.trim().length, action: "submit" }); }}>
+            <label htmlFor="account-search">Search the archive</label>
             <input id="account-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Account, player or ID" autoComplete="off" />
             {search && <button className="search-clear focus-ring" type="button" onClick={() => setSearch("")} aria-label="Clear search"><X size={15} /></button>}
           </form>
           <div className="catalog-control-row">
-            <button type="button" className={`filters-trigger focus-ring ${activeFilterCount ? "has-filters" : ""}`} onClick={() => setFiltersOpen(true)}><SlidersHorizontal size={15} /> Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}</button>
-            <label className="sort-select"><span>Sort</span><select value={sort} onChange={(event) => setSort(event.target.value as SortOption)} aria-label="Sort accounts"><option value="newest">Newest</option><option value="ovr">Highest OVR</option><option value="price-low">Lowest price</option><option value="price-high">Highest price</option></select></label>
+            <button type="button" className={`filters-trigger focus-ring ${activeFilterCount ? "has-filters" : ""}`} onClick={() => { trackApexEvent("catalog_filter", { action: "open", active_filters: activeFilterCount }); setFiltersOpen(true); }}><SlidersHorizontal size={15} /> Refine {activeFilterCount ? <b>{activeFilterCount}</b> : null}</button>
+            <label className="sort-select"><span>Order</span><select value={sort} onChange={(event) => { const nextSort = event.target.value as SortOption; trackApexEvent("catalog_sort", { order: nextSort }); setSort(nextSort); }} aria-label="Order account records"><option value="newest">Recently indexed</option><option value="ovr">Highest OVR</option><option value="price-low">Lowest price</option><option value="price-high">Highest price</option></select></label>
           </div>
-          <div className="quick-filter-scroller" aria-label="Quick filters">{quickFilters.map(([value, label]) => <button className={`quick-filter focus-ring ${quick === value ? "is-selected" : ""}`} type="button" key={value} onClick={() => setQuick(value)}>{label}</button>)}</div>
+          <div className="quick-filter-scroller" aria-label="Quick filters">{quickFilters.map(([value, label]) => <button className={`quick-filter focus-ring ${quick === value ? "is-selected" : ""}`} type="button" key={value} onClick={() => { trackApexEvent("catalog_filter", { quick_filter: value }); setQuick(value); }}>{label}</button>)}</div>
         </section>
 
         <section className="catalog-list" aria-live="polite">
@@ -112,7 +116,7 @@ export default function Accounts() {
           ) : accounts.length === 0 ? (
             <div className="catalog-empty"><span>00</span><h2>No matches</h2><p>Nothing in the current account archive matches this search or filter set.</p><button type="button" className="empty-clear focus-ring" onClick={clearDiscovery}>Clear filters</button></div>
           ) : (
-            <div className="account-grid">{accounts.map((account) => <div key={account.id} onClick={prepareAccountNavigation}><AccountCard account={account} /></div>)}</div>
+            <div className="account-grid">{accounts.map((account) => <div key={account.id} onClick={() => { trackApexEvent("account_record_open", { account_ovr: account.ovr }); prepareAccountNavigation(); }}><AccountCard account={account} /></div>)}</div>
           )}
         </section>
       </main>
