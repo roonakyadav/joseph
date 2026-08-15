@@ -120,7 +120,7 @@ export default function Home() {
 
           <div className="hero-wording" data-reveal>
             <p className="hero-pretitle">Account ownership, made legible.</p>
-            <h1 id="hero-title">Inspect your next <span>FC Mobile</span> account.</h1>
+            <h1 id="hero-title">Buy or sell <span>FC Mobile</span> accounts.</h1>
             <p className="hero-intro">Elite Traders presents a direct account archive around the squad itself—not generic listings, noise, or guesswork.</p>
           </div>
 
