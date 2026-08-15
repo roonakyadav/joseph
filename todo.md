@@ -58,3 +58,30 @@
 - [x] Implement an honest temporary submission handoff and complete confirmation screen that does not claim a listing or review decision.
 - [x] Validate normal, validation-error, image-preview, confirmation, missing-contact, and 360/375/390/412px mobile states before desktop expansion.
 - [x] Run production checks, visual review, checkpoint, and delivery.
+
+# APEX Secure Admin & Operations
+
+- [x] Document the shared account, media, submission, proof, settings, lifecycle, and role-based authorization model.
+- [x] Upgrade the static project to the secure full-stack foundation with authentication, database, and file storage.
+- [x] Add server-authorized admin routes and mutation APIs; verify public users cannot access or mutate operational data.
+- [x] Build the authenticated desktop-oriented `/admin` dashboard with only real operational counts and action-oriented empty/loading/error states.
+- [x] Build protected account inventory listing, create/edit forms, archive/sold/featured controls, safe destructive confirmations, and media upload/reorder/primary workflows.
+- [x] Build seller submission review, status progression, request-changes/reject/approve-for-listing actions, and safe submission-to-account conversion.
+- [x] Build protected proof management with publish/archive controls, privacy-redaction guidance, account links, and a production-versus-development guard.
+- [x] Build protected store settings for only public-facing values currently used by APEX.
+- [x] Replace public hardcoded data with shared published queries and validate account, featured, sold, proof, and settings propagation.
+- [ ] Test secure access control, mutations, storage boundaries, 390–1920px layouts, and the required operational end-to-end flow. Authenticated real-record lifecycle exercise is deferred pending provider-side preview-origin registration; no marketplace test data will be created.
+- [x] Run final production checks, independent review, checkpoint, and delivery.
+
+# APEX Operations Implementation Detail
+
+- [x] Resolve the full-stack Home merge artifact without replacing the established Account Archive public page.
+- [x] Migrate a shared operational schema for published accounts, controlled media, seller submissions, proof records, and store settings.
+- [x] Enforce role-gated operations server-side and prohibit public exposure of drafts, archived records, development proofs, and unreviewed submissions.
+- [x] Replace all public demo datasets and seller handoff logic with database-backed queries and mutations.
+- [x] Require approved seller submissions before they can be converted into an APEX account draft.
+- [x] Align the archive-control published-inventory metric with published records only.
+- [x] Add a private request-changes status and action to the seller-submission review workflow.
+- [x] Unify the mobile private-operations header with the APEX archive document frame.
+- [ ] Register the canonical Manus preview or published callback origin in the provider-side OAuth allowlist; the application audit is complete, but this workspace cannot modify that provider configuration.
+- [x] If OAuth redirect registration is unavailable in this environment, defer only authenticated lifecycle exercise and keep public product validation unblocked.

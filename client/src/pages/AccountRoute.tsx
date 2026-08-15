@@ -3,7 +3,8 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Expand,
 import { type PointerEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
-import { accountRecords, formatCurrency, formatQuantity, getAccountBySlug, type AccountMedia, type AccountRecord } from "@/data/accounts";
+import { formatCurrency, formatQuantity, mapPublicAccount, type AccountMedia, type AccountRecord } from "@/data/accounts";
+import { trpc } from "@/lib/trpc";
 import "./AccountRoute.css";
 
 function getWhatsappUrl(account: AccountRecord) {
@@ -86,22 +87,23 @@ function AccountGallery({ media, title, initialViewer = false }: GalleryProps) {
 
 export default function AccountRoute({ params }: { params: { slug: string } }) {
   const [, navigate] = useLocation();
-  const account = useMemo(() => getAccountBySlug(params.slug), [params.slug]);
-  const [loading, setLoading] = useState(true);
+  const recordQuery = trpc.accounts.getBySlug.useQuery({ slug: params.slug });
+  const accountIndexQuery = trpc.accounts.list.useQuery();
+  const account = recordQuery.data ? mapPublicAccount(recordQuery.data) : undefined;
   const [messageState, setMessageState] = useState<"idle" | "copied" | "unavailable">("idle");
   const galleryPreview = new URLSearchParams(window.location.search).get("viewer") === "1";
 
-  useEffect(() => { const timer = window.setTimeout(() => setLoading(false), 220); return () => window.clearTimeout(timer); }, [params.slug]);
   const returnToCatalog = () => window.history.length > 1 ? window.history.back() : navigate("/accounts");
 
-  if (loading) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><LoadingRecord /></div>;
+  if (recordQuery.isLoading) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><LoadingRecord /></div>;
   if (!account) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><main className="account-route-main"><section className="record-missing"><span>404 / Record unavailable</span><h1>Account record not found.</h1><p>This APEX identifier is not present in the current catalog.</p><Link className="record-return focus-ring" href="/accounts">Return to accounts <ArrowUpRight size={16} /></Link></section></main></div>;
 
   const isSold = account.status === "sold";
   const whatsappUrl = getWhatsappUrl(account);
   const enquiryMessage = `Hi, I'm interested in the APEX account ${account.id} (${account.ovr} OVR). Is it still available?`;
   const coreSpecs = [{ label: "Coins", value: formatQuantity(account.coins) }, { label: "Gems", value: formatQuantity(account.gems) }, { label: "Rank", value: account.rank }, { label: "Status", value: isSold ? "Sold" : "Available" }];
-  const relatedAccounts = accountRecords.filter((candidate) => candidate.slug !== account.slug && candidate.status === "available").sort((a, b) => Math.abs(a.ovr - account.ovr) - Math.abs(b.ovr - account.ovr)).slice(0, 3);
+  const relatedAccounts = (accountIndexQuery.data ?? []).map(mapPublicAccount).filter((candidate) => candidate.slug !== account.slug && candidate.status === "available").sort((a, b) => Math.abs(a.ovr - account.ovr) - Math.abs(b.ovr - account.ovr)).slice(0, 3);
+  const galleryMedia = account.media.length > 0 ? account.media : [{ src: "", alt: `${account.title} has no published media`, label: "Record image" as const }];
   const copyEnquiry = async () => {
     try { await navigator.clipboard.writeText(enquiryMessage); setMessageState("copied"); }
     catch { setMessageState("unavailable"); }
@@ -112,15 +114,15 @@ export default function AccountRoute({ params }: { params: { slug: string } }) {
     <ApexCatalogHeader active="accounts" />
     <main className="account-route-main with-sticky-action">
       <div className="detail-context"><button type="button" className="record-back focus-ring" onClick={returnToCatalog}><ArrowLeft size={15} /> Back to accounts</button><span>{account.id}</span></div>
-      <AccountGallery media={account.media} title={account.title} initialViewer={galleryPreview} />
+      <AccountGallery media={galleryMedia} title={account.title} initialViewer={galleryPreview} />
       <section className="record-identity" aria-labelledby="record-title"><div className="identity-rail"><span className={`record-status ${account.status}`}><i /> {account.status}</span><span>APEX / {account.classification} record</span></div><div className="record-title-line"><div><h1 id="record-title">{account.title}</h1><p>{account.id}</p></div><div className="record-ovr"><strong>{account.ovr}</strong><span>OVR</span></div></div></section>
-      <section className="price-panel" aria-label="Account price"><div><span>{isSold ? "Archive price reference" : "Listed price"}</span><strong>{formatCurrency(account.price, account.currency)}</strong></div><p>{isSold ? "Not active inventory" : "Available development record"}</p></section>
+      <section className="price-panel" aria-label="Account price"><div><span>{isSold ? "Archive price reference" : "Listed price"}</span><strong>{formatCurrency(account.price, account.currency)}</strong></div><p>{isSold ? "Not active inventory" : "Available verified record"}</p></section>
       <section className="record-specifications" aria-labelledby="specs-title"><div className="section-label"><span>01</span><p id="specs-title">Core specifications</p></div><dl>{coreSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl></section>
       <section className="record-players premium-section" aria-labelledby="players-title"><div className="section-label"><span>02</span><p id="players-title">Key players</p></div><div>{account.keyPlayers.map((player, index) => <span key={player}><i>{String(index + 1).padStart(2, "0")}</i><strong>{player}</strong><small>Curated record field</small></span>)}</div></section>
       <section className="record-description premium-section" aria-labelledby="description-title"><div className="section-label"><span>03</span><p id="description-title">Account note</p></div><p>{account.description}</p></section>
       <section className="record-transfer premium-section" aria-labelledby="transfer-title"><div className="section-label"><span>04</span><p id="transfer-title">Transfer information</p></div><dl><div><dt>Channel</dt><dd>{account.transfer.channel}</dd></div><div><dt>Handover note</dt><dd>{account.transfer.note}</dd></div></dl></section>
-      <section className="related-records premium-section" aria-labelledby="related-title"><div className="section-label"><span>05</span><p id="related-title">Archive continuation</p></div><div className="related-heading"><h2>Adjacent account files</h2><Link href="/accounts">Open index <ArrowRight size={15} /></Link></div><div className="related-list">{relatedAccounts.map((related) => <Link key={related.id} href={`/accounts/${related.slug}`} className="related-record focus-ring"><img src={related.image} alt="" /><span><i>{related.id}</i><strong>{related.title}</strong><small>Available / development preview</small></span><b><em>{related.ovr}</em><small>OVR</small></b><ArrowUpRight size={15} /></Link>)}</div></section>
-      <p className="record-disclaimer">Development record only. Live verification, seller contact and transfer information activate only when supplied with a connected account record.</p>
+      <section className="related-records premium-section" aria-labelledby="related-title"><div className="section-label"><span>05</span><p id="related-title">Archive continuation</p></div><div className="related-heading"><h2>Adjacent account files</h2><Link href="/accounts">Open index <ArrowRight size={15} /></Link></div><div className="related-list">{relatedAccounts.map((related) => <Link key={related.id} href={`/accounts/${related.slug}`} className="related-record focus-ring"><img src={related.image} alt="" /><span><i>{related.id}</i><strong>{related.title}</strong><small>Available / verified record</small></span><b><em>{related.ovr}</em><small>OVR</small></b><ArrowUpRight size={15} /></Link>)}</div></section>
+      <p className="record-disclaimer">Published account record. Availability, seller contact, and handover terms must be confirmed directly through the configured contact path.</p>
     </main>
     <aside className={`sticky-conversion ${isSold ? "is-sold" : ""}`} aria-label="Account decision action"><div><span>{isSold ? "Archived status" : "Listed price"}</span><strong>{isSold ? "Sold" : formatCurrency(account.price, account.currency)}</strong><small>{account.ovr} OVR · {account.id}</small></div>{isSold ? <Link href="/accounts" className="sticky-action focus-ring">Browse available <ArrowRight size={16} /></Link> : whatsappUrl ? <a className="sticky-action focus-ring" href={whatsappUrl} target="_blank" rel="noreferrer">Contact on WhatsApp <ArrowUpRight size={16} /></a> : <button type="button" className="sticky-action is-pending focus-ring" onClick={copyEnquiry}>{messageState === "copied" ? "Enquiry copied" : messageState === "unavailable" ? "Copy unavailable" : "Copy WhatsApp enquiry"}</button>}<span className={`conversion-note ${messageState !== "idle" ? "is-visible" : ""}`} role="status">{messageState === "copied" ? "Paste this contextual enquiry into the seller’s configured WhatsApp channel." : "Clipboard access is unavailable. Configure a seller channel to continue."}</span></aside>
   </div>;

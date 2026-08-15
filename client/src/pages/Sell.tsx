@@ -3,7 +3,9 @@ import { AlertCircle, ArrowDown, ArrowLeft, ArrowUp, ArrowUpRight, Check, Chevro
 import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
-import { emptySellerSubmissionDraft, handoffSellerSubmission, type SellerSubmissionDraft, type SellerContactMethod } from "@/data/sellerSubmission";
+import { emptySellerSubmissionDraft, type SellerSubmissionDraft, type SellerContactMethod } from "@/data/sellerSubmission";
+import { imageFileToUpload } from "@/lib/imageUpload";
+import { trpc } from "@/lib/trpc";
 import "./Sell.css";
 
 type FieldName = keyof SellerSubmissionDraft;
@@ -33,7 +35,7 @@ export default function Sell() {
   const [previews, setPreviews] = useState<PreviewFile[]>([]);
   const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "not-configured" | "failed" | "accepted">("idle");
+  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "failed" | "accepted">("idle");
   const [reference, setReference] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -46,8 +48,8 @@ export default function Sell() {
       setTouched({ sellerName: true, sellerContact: true, accountTitle: true, ovr: true });
       setErrors(previewErrors);
     }
-    if (previewMode === "service") setSubmitState("not-configured");
   }, [previewMode]);
+  const createSubmission = trpc.submissions.create.useMutation();
   useEffect(() => {
     const warnBeforeLeave = (event: BeforeUnloadEvent) => { if (!isDirty || submitState === "accepted") return; event.preventDefault(); event.returnValue = ""; };
     window.addEventListener("beforeunload", warnBeforeLeave);
@@ -79,9 +81,30 @@ export default function Sell() {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) { document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus(); return; }
     setSubmitState("submitting");
-    const result = await handoffSellerSubmission({ ...draft, ovr: Number(draft.ovr), priceExpectation: draft.priceExpectation ? Number(draft.priceExpectation) : undefined, coins: draft.coins ? Number(draft.coins) : undefined, gems: draft.gems ? Number(draft.gems) : undefined, fcPoints: draft.fcPoints ? Number(draft.fcPoints) : undefined, imageFiles: previews.map((preview) => preview.file), createdAt: new Date().toISOString() });
-    if (result.kind === "accepted") { setReference(result.reference); setSubmitState("accepted"); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-    setSubmitState(result.kind);
+    try {
+      const images = await Promise.all(previews.map((preview, index) => imageFileToUpload(preview.file, `Seller evidence screenshot ${index + 1}`)));
+      const result = await createSubmission.mutateAsync({
+        sellerName: draft.sellerName.trim(),
+        contactMethod: draft.contactMethod,
+        sellerContact: draft.sellerContact.trim(),
+        accountTitle: draft.accountTitle.trim(),
+        ovr: Number(draft.ovr),
+        priceExpectation: draft.priceExpectation ? Number(draft.priceExpectation) : 0,
+        coins: draft.coins ? Number(draft.coins) : 0,
+        gems: draft.gems ? Number(draft.gems) : 0,
+        fcPoints: draft.fcPoints ? Number(draft.fcPoints) : 0,
+        rank: draft.rank.trim() || null,
+        formation: draft.formation.trim() || null,
+        keyPlayers: draft.keyPlayers.split(",").map((player) => player.trim()).filter(Boolean),
+        notes: draft.notes.trim() || null,
+        images,
+      });
+      setReference(result.id.slice(-8).toUpperCase());
+      setSubmitState("accepted");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setSubmitState("failed");
+    }
   };
 
   if (submitState === "accepted") return <div className="sell-page"><ApexCatalogHeader active="sell" /><main className="sell-confirmation"><span className="confirmation-seal"><Check size={26} /></span><p className="eyebrow">APEX / Submission protocol</p><h1>Submission received.</h1><p>Your account information has been sent for review. APEX will use the contact method you provided if a next step is available.</p>{reference && <span className="confirmation-reference">Reference / {reference}</span>}<div><Link className="sell-primary focus-ring" href="/accounts">Browse accounts <ArrowUpRight size={16} /></Link><Link className="sell-secondary focus-ring" href="/">Return home</Link></div></main></div>;
@@ -90,7 +113,7 @@ export default function Sell() {
     <section className="sell-intro" aria-labelledby="sell-title"><div className="sell-rail"><p className="eyebrow"><i /> APEX / Seller intake</p><span>Review protocol / 03</span></div><div className="sell-intro-copy"><h1 id="sell-title">Prepare an<br /><em>account record.</em></h1><p>Compile squad detail and account evidence for review. No record is published until APEX makes an explicit decision.</p><button type="button" className="sell-primary focus-ring" onClick={startSubmission}>Open account record <ArrowDown size={16} /></button></div><aside className="sell-intake-stamp"><span className="sell-a-seal" aria-hidden="true"><img src="/manus-storage/apex-mark_890b511d.png" alt="" /></span><p>Submission review</p><strong>Not a self-publish route</strong><small>Prepared account records are reviewed before any public decision.</small></aside></section>
     <section className="sell-process" aria-labelledby="process-title"><div className="process-heading"><span>001</span><p id="process-title">What happens next</p></div><ol>{[["01", "Share account details", "Create the core record APEX needs to review."], ["02", "Add supporting screenshots", "Include clear account and squad images."], ["03", "APEX reviews the submission", "The information is considered before any listing decision."], ["04", "Continue through direct contact", "Your chosen contact channel is used if follow-up is needed."]].map(([number, title, description]) => <li key={number}><span>{number}</span><div><strong>{title}</strong><p>{description}</p></div></li>)}</ol></section>
     <form ref={formRef} className="seller-form" onSubmit={submit} noValidate aria-labelledby="form-title"><div className="form-header"><div><p className="eyebrow">002 / Assemble account file</p><h2 id="form-title">Submission record</h2></div><p>Fields marked <b>Required</b> are needed for APEX to review your account record.</p></div>
-      {submitState !== "idle" && <div className={`form-service-note ${submitState}`} role="status"><AlertCircle size={16} /><p>{submitState === "submitting" ? "Preparing a secure review handoff…" : submitState === "not-configured" ? "Seller submissions are not connected yet. Your details have not been sent or stored." : "The submission handoff could not be reached. Your details have not been sent."}</p></div>}
+      {submitState !== "idle" && <div className={`form-service-note ${submitState}`} role="status"><AlertCircle size={16} /><p>{submitState === "submitting" ? "Preparing your private review record…" : "The submission could not be sent. Your details have not been stored; please try again."}</p></div>}
       <fieldset className="form-section"><legend><span>01</span> Contact for review</legend><div className="form-grid"><div className="sell-field"><FieldLabel required>Preferred name</FieldLabel><input id="seller-name" value={draft.sellerName} onChange={(event) => setField("sellerName", event.target.value)} onBlur={() => touchField("sellerName")} aria-invalid={Boolean(touched.sellerName && errors.sellerName)} aria-describedby={errors.sellerName ? "seller-name-error" : undefined} autoComplete="name" />{touched.sellerName && errors.sellerName && <p id="seller-name-error" className="field-error"><AlertCircle size={13} />{errors.sellerName}</p>}</div><div className="sell-field"><FieldLabel required>Preferred contact</FieldLabel><div className="contact-control"><select value={draft.contactMethod} onChange={(event) => setField("contactMethod", event.target.value as SellerContactMethod)} aria-label="Contact method"><option value="whatsapp">WhatsApp</option><option value="email">Email</option><option value="other">Other</option></select><input value={draft.sellerContact} onChange={(event) => setField("sellerContact", event.target.value)} onBlur={() => touchField("sellerContact")} placeholder={draft.contactMethod === "email" ? "name@example.com" : "Your contact detail"} aria-invalid={Boolean(touched.sellerContact && errors.sellerContact)} /></div>{touched.sellerContact && errors.sellerContact && <p className="field-error"><AlertCircle size={13} />{errors.sellerContact}</p>}</div></div></fieldset>
       <fieldset className="form-section"><legend><span>02</span> Account overview</legend><div className="form-grid"><div className="sell-field full"><FieldLabel required>Account title</FieldLabel><input value={draft.accountTitle} onChange={(event) => setField("accountTitle", event.target.value)} onBlur={() => touchField("accountTitle")} placeholder="A short working title for the account" aria-invalid={Boolean(touched.accountTitle && errors.accountTitle)} />{touched.accountTitle && errors.accountTitle && <p className="field-error"><AlertCircle size={13} />{errors.accountTitle}</p>}</div><div className="sell-field"><FieldLabel required>OVR</FieldLabel><input inputMode="numeric" type="number" min="1" value={draft.ovr} onChange={(event) => setField("ovr", event.target.value)} onBlur={() => touchField("ovr")} placeholder="e.g. 118" aria-invalid={Boolean(touched.ovr && errors.ovr)} />{touched.ovr && errors.ovr && <p className="field-error"><AlertCircle size={13} />{errors.ovr}</p>}</div><div className="sell-field"><FieldLabel>Price expectation / USD</FieldLabel><input inputMode="decimal" type="number" min="0" value={draft.priceExpectation} onChange={(event) => setField("priceExpectation", event.target.value)} onBlur={() => touchField("priceExpectation")} placeholder="Optional" aria-invalid={Boolean(touched.priceExpectation && errors.priceExpectation)} />{touched.priceExpectation && errors.priceExpectation && <p className="field-error"><AlertCircle size={13} />{errors.priceExpectation}</p>}</div><div className="sell-field"><FieldLabel>Rank</FieldLabel><input value={draft.rank} onChange={(event) => setField("rank", event.target.value)} placeholder="Optional" /></div><div className="sell-field"><FieldLabel>Formation</FieldLabel><input value={draft.formation} onChange={(event) => setField("formation", event.target.value)} placeholder="Optional" /></div></div></fieldset>
       <fieldset className="form-section"><legend><span>03</span> Resources</legend><div className="form-grid resources-grid">{(["coins", "gems", "fcPoints"] as FieldName[]).map((field) => <div className="sell-field" key={field}><FieldLabel>{field === "fcPoints" ? "FC Points" : field[0].toUpperCase() + field.slice(1)}</FieldLabel><input inputMode="numeric" type="number" min="0" value={draft[field]} onChange={(event) => setField(field, event.target.value)} onBlur={() => touchField(field)} placeholder="Optional" aria-invalid={Boolean(touched[field] && errors[field])} />{touched[field] && errors[field] && <p className="field-error"><AlertCircle size={13} />{errors[field]}</p>}</div>)}</div></fieldset>

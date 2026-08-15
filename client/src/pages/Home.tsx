@@ -1,10 +1,10 @@
 // APEX DESIGN: Account Archive 02 — a product-first FC Mobile account specimen, not a conventional landing-page stack.
 import { ArrowDown, ArrowUpRight, X } from "lucide-react";
-import { type PointerEvent, useEffect, useState } from "react";
+import { type PointerEvent, useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
+import { formatCurrency, formatQuantity, mapPublicAccount } from "@/data/accounts";
+import { trpc } from "@/lib/trpc";
 import "./Home.css";
-
-const APEX_WHATSAPP_URL = "";
 
 const futureRoutes = [
   ["05", "Community", "Official channel"],
@@ -26,6 +26,10 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(indexPreview);
   const [communityNote, setCommunityNote] = useState(false);
   const [artifactActive, setArtifactActive] = useState(false);
+  const settingsQuery = trpc.settings.getPublic.useQuery();
+  const featuredQuery = trpc.accounts.getFeatured.useQuery();
+  const featuredAccounts = useMemo(() => (featuredQuery.data ?? []).map(mapPublicAccount), [featuredQuery.data]);
+  const communityUrl = settingsQuery.data?.whatsappCommunityUrl ?? "";
 
   useEffect(() => {
     if (welcomeMode === "preview") return;
@@ -108,7 +112,7 @@ export default function Home() {
           <i>Active</i>
         </div>
         <div className="index-future">
-          <Link href="/accounts" onClick={() => setMenuOpen(false)} className="index-live-route"><span>02</span><strong>Accounts</strong><p>Development catalog</p><i>Open</i></Link>
+          <Link href="/accounts" onClick={() => setMenuOpen(false)} className="index-live-route"><span>02</span><strong>Accounts</strong><p>Public archive</p><i>Open</i></Link>
           <Link href="/sell" onClick={() => setMenuOpen(false)} className="index-live-route"><span>03</span><strong>Sell</strong><p>Submission protocol</p><i>Open</i></Link>
           <Link href="/proofs" onClick={() => setMenuOpen(false)} className="index-live-route"><span>04</span><strong>Proofs</strong><p>Evidence archive</p><i>Open</i></Link>
           {futureRoutes.map(([index, name, state]) => (
@@ -166,6 +170,11 @@ export default function Home() {
           <div className="hero-actions"><Link href="/accounts" className="explore-accounts focus-ring">Explore accounts <ArrowUpRight size={16} aria-hidden="true" /></Link><button className="inspect-cue focus-ring" type="button" onClick={ScrollToProtocol}><span>Inspect the system</span><ArrowDown size={16} aria-hidden="true" /></button></div>
         </section>
 
+        <section className="featured-index" aria-labelledby="featured-title">
+          <div className="featured-index-head" data-reveal><span className="eyebrow">001 / Selected records</span><div><h2 id="featured-title">Featured in the <em>archive.</em></h2><Link href="/accounts" className="featured-index-link">Open full index <ArrowUpRight size={15} /></Link></div></div>
+          {featuredQuery.isLoading ? <div className="featured-loading" aria-label="Loading featured records"><i /><i /></div> : featuredAccounts.length ? <div className="featured-list">{featuredAccounts.map((account, index) => <Link href={`/accounts/${account.slug}`} className="featured-record focus-ring" key={account.id} data-reveal><div className="featured-record-image">{account.image ? <img src={account.image} alt={account.imageAlt} /> : <span>Media pending</span>}<b>{String(index + 1).padStart(2, "0")}</b></div><div className="featured-record-copy"><span>{account.id} / {account.status}</span><h3>{account.title}</h3><p>{account.keyPlayers.slice(0, 3).join(" · ") || "Account details available in record"}</p></div><dl><div><dt>OVR</dt><dd>{account.ovr}</dd></div><div><dt>Coins</dt><dd>{formatQuantity(account.coins)}</dd></div><div><dt>Price</dt><dd>{formatCurrency(account.price, account.currency)}</dd></div></dl><ArrowUpRight size={17} /></Link>)}</div> : <div className="featured-empty" data-reveal><span>Archive signal / Pending</span><p>Featured records will appear here when the APEX operations team marks a published account for the public archive.</p></div>}
+        </section>
+
         <section className="inspection-flow" id="protocol" aria-labelledby="protocol-title">
           <div className="flow-marker" data-reveal><span>002</span><div /><p>Account protocol</p></div>
           <div className="flow-heading" data-reveal>
@@ -200,12 +209,12 @@ export default function Home() {
           <div className="wire-body" data-reveal>
             <h2 id="community-title">Stay close to the build.</h2>
             <p>Official community updates will run through this channel once it is configured.</p>
-            {APEX_WHATSAPP_URL ? (
-              <a className="apex-button primary focus-ring" href={APEX_WHATSAPP_URL} target="_blank" rel="noreferrer">Open WhatsApp community <ArrowUpRight size={16} /></a>
+            {communityUrl ? (
+              <a className="apex-button primary focus-ring" href={communityUrl} target="_blank" rel="noreferrer">Open WhatsApp community <ArrowUpRight size={16} /></a>
             ) : (
               <>
                 <button className="apex-button pending focus-ring" type="button" onClick={showCommunityNote}>WhatsApp link pending <ArrowUpRight size={16} /></button>
-                <p className={`configuration-note ${communityNote ? "is-visible" : ""}`} role="status">Official community connection awaits configuration.</p>
+                <p className={`configuration-note ${communityNote ? "is-visible" : ""}`} role="status">Official community connection awaits administrator configuration.</p>
               </>
             )}
           </div>

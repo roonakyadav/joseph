@@ -1,0 +1,1 @@
+ALTER TABLE `seller_submissions` MODIFY COLUMN `status` enum('pending','reviewing','changes-requested','approved','rejected') NOT NULL DEFAULT 'pending';

@@ -3,7 +3,8 @@ import { SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { ApexCatalogHeader } from "@/components/ApexCatalogHeader";
 import { AccountCard, AccountCardSkeleton } from "@/components/AccountCard";
-import { accountRecords, type AccountStatus } from "@/data/accounts";
+import { mapPublicAccount, type AccountStatus } from "@/data/accounts";
+import { trpc } from "@/lib/trpc";
 import "./Accounts.css";
 
 type QuickFilter = "all" | "110" | "115" | "budget" | "available";
@@ -35,13 +36,11 @@ export default function Accounts() {
   const [maxPrice, setMaxPrice] = useState(stored.maxPrice ?? "");
   const [sort, setSort] = useState<SortOption>(stored.sort ?? "newest");
   const [filtersOpen, setFiltersOpen] = useState(previewMode === "filters");
-  const [loading, setLoading] = useState(true);
+  const recordsQuery = trpc.accounts.list.useQuery();
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 380);
     const storedScroll = Number(window.sessionStorage.getItem(CATALOG_SCROLL_KEY));
     if (storedScroll) window.setTimeout(() => window.scrollTo(0, storedScroll), 0);
-    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -53,9 +52,10 @@ export default function Accounts() {
     window.sessionStorage.setItem(CATALOG_STATE_KEY, JSON.stringify({ search, quick, status, minOvr, maxPrice, sort }));
   }, [search, quick, status, minOvr, maxPrice, sort]);
 
+  const allAccounts = useMemo(() => (recordsQuery.data ?? []).map(mapPublicAccount), [recordsQuery.data]);
   const accounts = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const result = accountRecords.filter((account) => {
+    const result = allAccounts.filter((account) => {
       const searchable = [account.title, account.id, account.rank, ...account.keyPlayers].join(" ").toLowerCase();
       const quickMatch = quick === "all" || (quick === "110" && account.ovr >= 110) || (quick === "115" && account.ovr >= 115) || (quick === "budget" && account.price <= 50) || (quick === "available" && account.status === "available");
       const statusMatch = status === "all" || account.status === status;
@@ -70,7 +70,7 @@ export default function Accounts() {
       if (sort === "price-high") return b.price - a.price;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [search, quick, status, minOvr, maxPrice, sort]);
+  }, [allAccounts, search, quick, status, minOvr, maxPrice, sort]);
 
   const clearDiscovery = () => { setSearch(""); setQuick("all"); setStatus("all"); setMinOvr(""); setMaxPrice(""); };
   const prepareAccountNavigation = () => window.sessionStorage.setItem(CATALOG_SCROLL_KEY, String(window.scrollY));
@@ -83,9 +83,9 @@ export default function Accounts() {
       <ApexCatalogHeader active="accounts" />
       <main className="accounts-main">
         <section className="catalog-intro" aria-labelledby="accounts-title">
-          <div className="catalog-intro-rail"><p className="eyebrow"><i /> APEX / Account archive</p><span>Controlled development index</span></div>
-          <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect development squad records, resource fields and price markers.</p></div><div className="catalog-count"><strong>{accountRecords.length}</strong><span>Concept<br />records</span></div></div>
-          <div className="catalog-dossier-rail" aria-label="Catalog classification"><span>Index / 02</span><span>Classification / Concept preview</span><span>Account object first</span></div>
+          <div className="catalog-intro-rail"><p className="eyebrow"><i /> APEX / Account archive</p><span>Controlled public index</span></div>
+          <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect verified squad records, resource fields and price markers.</p></div><div className="catalog-count"><strong>{allAccounts.length}</strong><span>Public<br />records</span></div></div>
+          <div className="catalog-dossier-rail" aria-label="Catalog classification"><span>Index / 02</span><span>Classification / Published records</span><span>Account object first</span></div>
         </section>
 
         <section className="catalog-controls" aria-label="Account discovery controls">
@@ -102,13 +102,15 @@ export default function Accounts() {
         </section>
 
         <section className="catalog-list" aria-live="polite">
-          <div className="catalog-list-heading"><p>{loading ? "Retrieving account records" : `${accounts.length} indexed ${accounts.length === 1 ? "record" : "records"}`}</p><span>Archive / 02</span></div>
-          {loading ? (
+          <div className="catalog-list-heading"><p>{recordsQuery.isLoading ? "Retrieving account records" : `${accounts.length} indexed ${accounts.length === 1 ? "record" : "records"}`}</p><span>Archive / 02</span></div>
+          {recordsQuery.isLoading ? (
             <div className="account-grid">{Array.from({ length: 3 }, (_, index) => <AccountCardSkeleton key={index} />)}</div>
-          ) : accountRecords.length === 0 ? (
-            <div className="catalog-empty"><span>00</span><h2>No records loaded</h2><p>The development index is not populated yet. The official APEX channel will be shown here once configured.</p></div>
+          ) : recordsQuery.isError ? (
+            <div className="catalog-empty"><span>00</span><h2>Archive unavailable</h2><p>The public account index could not be loaded right now. Please try again shortly.</p></div>
+          ) : allAccounts.length === 0 ? (
+            <div className="catalog-empty"><span>00</span><h2>No public records</h2><p>Verified accounts will appear here when their archive record is published.</p></div>
           ) : accounts.length === 0 ? (
-            <div className="catalog-empty"><span>00</span><h2>No matches</h2><p>Nothing in the current development catalog matches this search or filter set.</p><button type="button" className="empty-clear focus-ring" onClick={clearDiscovery}>Clear filters</button></div>
+            <div className="catalog-empty"><span>00</span><h2>No matches</h2><p>Nothing in the current account archive matches this search or filter set.</p><button type="button" className="empty-clear focus-ring" onClick={clearDiscovery}>Clear filters</button></div>
           ) : (
             <div className="account-grid">{accounts.map((account) => <div key={account.id} onClick={prepareAccountNavigation}><AccountCard account={account} /></div>)}</div>
           )}
