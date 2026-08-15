@@ -233,7 +233,7 @@
 
 - [x] Inspect the application title configuration and current hosting-domain configuration for remaining apex-based naming.
 - [x] Update the application-controlled website title to Elite Traders and validate the configuration without changing unrelated brand or product behavior.
-- [ ] Document and complete, where supported, the safe hosted-domain change from the current apex-based URL prefix to an Elite Traders URL.
+- [x] Document the safe hosted-domain change from the current apex-based URL prefix to an Elite Traders URL; the platform-managed prefix must be selected by the owner in Settings → Domains and cannot be changed by website source code.
 
 # Elite Traders Full-Site Light Theme
 
