@@ -187,3 +187,12 @@
 - [x] Inspect and replace only the Archive Specimen placeholder OVR, Coins, Gems, and Status block with concise truthful Elite Traders platform information.
 - [x] Use the existing official WhatsApp community URL only for the Community item, without adding fabricated account details, statistics, or marketplace claims.
 - [x] Verify the compact mobile layout, bottom-navigation clearance, isolated git diff, type/build checks, and push the requested commit to `roonakyadav/joseph`.
+
+# Thinking Nine Route Loader
+
+- [x] Inspect every existing route/page loading boundary and the current generic archive-loading presentation.
+- [x] Create one reusable Elite Traders Thinking Nine SVG loader with animation-frame cleanup, no per-frame DOM creation, and a reduced-motion fallback.
+- [x] Add focused regression coverage for the shared loader’s route integration, animation-frame cleanup, and reduced-motion behavior.
+- [x] Replace only the shared route-loading presentation with the reusable loader and clear destination-aware BUY, SELL, and PROOFS labels.
+- [x] Verify mobile/tablet/desktop behavior, transition rendering, reduced motion, memory-safe cleanup, route content clearance, tests, and production build.
+- [x] Save, commit, and push the verified Thinking Nine loader release to `roonakyadav/joseph`.
