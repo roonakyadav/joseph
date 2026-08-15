@@ -181,3 +181,9 @@
 - [x] Add responsive mobile public-content clearance so the floating navigation does not cover end-of-page content.
 - [x] Verify all four routes, active state, keyboard/touch behavior, safe-area handling, 320–414px layouts, tablet/desktop composition, and production build.
 - [x] Save, commit, and push the approved mobile navigation implementation to `roonakyadav/joseph` without changing unrelated product functionality.
+
+# Truthful Archive Specimen Information
+
+- [x] Inspect and replace only the Archive Specimen placeholder OVR, Coins, Gems, and Status block with concise truthful Elite Traders platform information.
+- [x] Use the existing official WhatsApp community URL only for the Community item, without adding fabricated account details, statistics, or marketplace claims.
+- [x] Verify the compact mobile layout, bottom-navigation clearance, isolated git diff, type/build checks, and push the requested commit to `roonakyadav/joseph`.
