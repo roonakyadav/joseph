@@ -37,8 +37,8 @@ function createAdminContext(): TrpcContext {
     user: {
       id: 1,
       openId: "apex-admin-test",
-      email: "admin@example.com",
-      name: "APEX Test Admin",
+      email: "elitetradersfcm@gmail.com",
+      name: "Elite Traders Test Admin",
       loginMethod: "manus",
       role: "admin",
       createdAt: new Date(),

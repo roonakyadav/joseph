@@ -11,7 +11,7 @@ import "./AccountRoute.css";
 
 function getWhatsappUrl(account: AccountRecord) {
   if (!account.sellerWhatsapp) return "";
-  const message = `Hi, I'm interested in the APEX account ${account.id} (${account.ovr} OVR). Is it still available?`;
+  const message = `Hi, I'm interested in the Elite Traders account ${account.id} (${account.ovr} OVR). Is it still available?`;
   return `https://wa.me/${account.sellerWhatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 }
 
@@ -92,17 +92,17 @@ export default function AccountRoute({ params }: { params: { slug: string } }) {
   const recordQuery = trpc.accounts.getBySlug.useQuery({ slug: params.slug });
   const accountIndexQuery = trpc.accounts.list.useQuery();
   const account = recordQuery.data ? mapPublicAccount(recordQuery.data) : undefined;
-  usePageMeta({ title: account ? `${account.title} — APEX account record` : "Account record — APEX", description: account ? `${account.ovr} OVR FC Mobile account record with ${account.keyPlayers.slice(0, 3).join(", ")}.` : "Inspect a published APEX FC Mobile account record.", path: `/accounts/${params.slug}`, image: account?.image, noIndex: !account });
+  usePageMeta({ title: account ? `${account.title} — Elite Traders account record` : "Account record — Elite Traders", description: account ? `${account.ovr} OVR FC Mobile account record with ${account.keyPlayers.slice(0, 3).join(", ")}.` : "Inspect a published Elite Traders FC Mobile account record.", path: `/accounts/${params.slug}`, image: account?.image, noIndex: !account });
   const [messageState, setMessageState] = useState<"idle" | "copied" | "unavailable">("idle");
 
   const returnToCatalog = () => window.history.length > 1 ? window.history.back() : navigate("/accounts");
 
   if (recordQuery.isLoading) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><LoadingRecord /></div>;
-  if (!account) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><main className="account-route-main"><section className="record-missing"><span>404 / Record unavailable</span><h1>Account record not found.</h1><p>This APEX identifier is not present in the current catalog.</p><Link className="record-return focus-ring" href="/accounts">Return to accounts <ArrowUpRight size={16} /></Link></section></main></div>;
+  if (!account) return <div className="account-route-page"><ApexCatalogHeader active="accounts" /><main className="account-route-main"><section className="record-missing"><span>404 / Record unavailable</span><h1>Account record not found.</h1><p>This Elite Traders identifier is not present in the current catalog.</p><Link className="record-return focus-ring" href="/accounts">Return to accounts <ArrowUpRight size={16} /></Link></section></main></div>;
 
   const isSold = account.status === "sold";
   const whatsappUrl = getWhatsappUrl(account);
-  const enquiryMessage = `Hi, I'm interested in the APEX account ${account.id} (${account.ovr} OVR). Is it still available?`;
+  const enquiryMessage = `Hi, I'm interested in the Elite Traders account ${account.id} (${account.ovr} OVR). Is it still available?`;
   const coreSpecs = [{ label: "Coins", value: formatQuantity(account.coins) }, { label: "Gems", value: formatQuantity(account.gems) }, { label: "Rank", value: account.rank }, { label: "Status", value: isSold ? "Sold" : "Available" }];
   const relatedAccounts = (accountIndexQuery.data ?? []).map(mapPublicAccount).filter((candidate) => candidate.slug !== account.slug && candidate.status === "available").sort((a, b) => Math.abs(a.ovr - account.ovr) - Math.abs(b.ovr - account.ovr)).slice(0, 3);
   const galleryMedia = account.media.length > 0 ? account.media : [{ src: "", alt: `${account.title} has no published media`, label: "Record image" as const }];
@@ -117,7 +117,7 @@ export default function AccountRoute({ params }: { params: { slug: string } }) {
     <main className="account-route-main with-sticky-action">
       <div className="detail-context"><button type="button" className="record-back focus-ring" onClick={returnToCatalog}><ArrowLeft size={15} /> Back to accounts</button><span>{account.id}</span></div>
       <AccountGallery media={galleryMedia} title={account.title} />
-      <section className="record-identity" aria-labelledby="record-title"><div className="identity-rail"><span className={`record-status ${account.status}`}><i /> {account.status}</span><span>APEX / {account.classification} record</span></div><div className="record-title-line"><div><h1 id="record-title">{account.title}</h1><p>{account.id}</p></div><div className="record-ovr"><strong>{account.ovr}</strong><span>OVR</span></div></div></section>
+      <section className="record-identity" aria-labelledby="record-title"><div className="identity-rail"><span className={`record-status ${account.status}`}><i /> {account.status}</span><span>Elite Traders / {account.classification} record</span></div><div className="record-title-line"><div><h1 id="record-title">{account.title}</h1><p>{account.id}</p></div><div className="record-ovr"><strong>{account.ovr}</strong><span>OVR</span></div></div></section>
       <section className="price-panel" aria-label="Account price"><div><span>{isSold ? "Archive price reference" : "Listed price"}</span><strong>{formatCurrency(account.price, account.currency)}</strong></div><p>{isSold ? "Not active inventory" : "Published available record"}</p></section>
       <section className="record-specifications" aria-labelledby="specs-title"><div className="section-label"><span>01</span><p id="specs-title">Core specifications</p></div><dl>{coreSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl></section>
       <section className="record-players premium-section" aria-labelledby="players-title"><div className="section-label"><span>02</span><p id="players-title">Key players</p></div><div>{account.keyPlayers.map((player, index) => <span key={player}><i>{String(index + 1).padStart(2, "0")}</i><strong>{player}</strong><small>Curated record field</small></span>)}</div></section>

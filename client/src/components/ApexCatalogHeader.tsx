@@ -53,16 +53,16 @@ export function ApexCatalogHeader({ active = "accounts" }: { active?: "home" | "
   return (
     <>
       <header className="catalog-header">
-        <Link href="/" className="catalog-brand focus-ring" aria-label="APEX home">
-          <APEXMark /> <span>APEX</span>
+        <Link href="/" className="catalog-brand focus-ring" aria-label="Elite Traders home">
+          <APEXMark /> <span>Elite Traders</span>
         </Link>
         <div className="catalog-header-meta"><span>Archive / Live</span><button ref={indexTriggerRef} className="catalog-index-trigger focus-ring" type="button" onClick={() => setIndexOpen(true)} aria-expanded={indexOpen} aria-controls="catalog-index"><i /> Index <b>{active === "proofs" ? "04" : active === "sell" ? "03" : active === "accounts" ? "02" : "01"}</b></button></div>
       </header>
       {indexOpen && <div className="catalog-index-layer">
         <button type="button" className="catalog-index-backdrop" aria-label="Close navigation index" onClick={closeIndex} />
-        <aside id="catalog-index" ref={indexPanelRef} className="catalog-index is-open" role="dialog" aria-modal="true" aria-label="APEX platform index">
-        <div className="catalog-index-top"><p>APEX / Platform index</p><button type="button" className="catalog-index-close focus-ring" aria-label="Close navigation index" onClick={closeIndex}><X size={18} /></button></div>
-        <nav className="catalog-index-nav" aria-label="APEX platform routes">
+        <aside id="catalog-index" ref={indexPanelRef} className="catalog-index is-open" role="dialog" aria-modal="true" aria-label="Elite Traders platform index">
+        <div className="catalog-index-top"><p>Elite Traders / Platform index</p><button type="button" className="catalog-index-close focus-ring" aria-label="Close navigation index" onClick={closeIndex}><X size={18} /></button></div>
+        <nav className="catalog-index-nav" aria-label="Elite Traders platform routes">
           <Link href="/" className={active === "home" ? "is-active" : ""} onClick={closeIndex}><span>01</span><strong>Home</strong><small>Platform entry</small>{active === "home" && <i>Active</i>}</Link>
           <Link href="/accounts" className={active === "accounts" ? "is-active" : ""} onClick={closeIndex}><span>02</span><strong>Accounts</strong><small>Public record index</small>{active === "accounts" && <i>Active</i>}</Link>
           <Link href="/sell" className={active === "sell" ? "is-active" : ""} onClick={closeIndex}><span>03</span><strong>Sell</strong><small>Submission protocol</small>{active === "sell" && <i>Active</i>}</Link>

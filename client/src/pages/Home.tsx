@@ -9,7 +9,7 @@ import { trpc } from "@/lib/trpc";
 import "./Home.css";
 
 function APEXMark({ className = "" }: { className?: string }) {
-  return <img className={`apex-mark ${className}`} src="/manus-storage/apex-mark_890b511d.png" alt="APEX" />;
+  return <img className={`apex-mark ${className}`} src="/manus-storage/apex-mark_890b511d.png" alt="Elite Traders" />;
 }
 
 function ScrollToProtocol() {
@@ -18,7 +18,7 @@ function ScrollToProtocol() {
 }
 
 export default function Home() {
-  usePageMeta({ title: "APEX — FC Mobile account archive", description: "Inspect published FC Mobile account records, evidence, and configured contact paths.", path: "/" });
+  usePageMeta({ title: "Elite Traders — FC Mobile account archive", description: "Inspect published FC Mobile account records, evidence, and configured contact paths.", path: "/" });
   const [introVisible, setIntroVisible] = useState(() => !window.sessionStorage.getItem("apex-entry-seen"));
   const [menuOpen, setMenuOpen] = useState(false);
   const [communityNote, setCommunityNote] = useState(false);
@@ -80,9 +80,9 @@ export default function Home() {
     <div className="apex-page">
       <div className="apex-grid" aria-hidden="true" />
       <header className="apex-header">
-        <a className="brand-lockup focus-ring" href="#top" aria-label="APEX home">
+        <a className="brand-lockup focus-ring" href="#top" aria-label="Elite Traders home">
           <APEXMark />
-          <span>APEX</span>
+          <span>Elite Traders</span>
         </a>
         <div className="header-right">
           <span className="header-build">Archive / Live</span>
@@ -94,7 +94,7 @@ export default function Home() {
 
       <aside id="apex-index" className={`index-panel ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
         <div className="index-panel-top">
-          <p className="micro-label">APEX / Platform index</p>
+          <p className="micro-label">Elite Traders / Platform index</p>
           <button className="index-close focus-ring" type="button" onClick={() => setMenuOpen(false)} aria-label="Close navigation index"><X size={18} /></button>
         </div>
         <div className="index-current">
@@ -114,19 +114,19 @@ export default function Home() {
       <main id="top">
         <section className="specimen-hero" aria-labelledby="hero-title">
           <div className="hero-rail" data-reveal>
-            <span className="eyebrow"><i /> APEX / FC Mobile account archive</span>
+            <span className="eyebrow"><i /> Elite Traders / FC Mobile account archive</span>
             <span className="micro-label">ID / A-001 · Global relay</span>
           </div>
 
           <div className="hero-wording" data-reveal>
             <p className="hero-pretitle">Account ownership, made legible.</p>
             <h1 id="hero-title">Inspect your next <span>FC Mobile</span> account.</h1>
-            <p className="hero-intro">APEX presents a direct account archive around the squad itself—not generic listings, noise, or guesswork.</p>
+            <p className="hero-intro">Elite Traders presents a direct account archive around the squad itself—not generic listings, noise, or guesswork.</p>
           </div>
 
           <article
             className={`account-artifact ${artifactActive ? "is-active" : ""}`}
-            aria-label="APEX account archive visual specimen"
+            aria-label="Elite Traders account archive visual specimen"
             data-reveal
             onPointerMove={handleArtifactPointerMove}
             onPointerLeave={resetArtifactTilt}
@@ -161,7 +161,7 @@ export default function Home() {
 
         <section className="featured-index" aria-labelledby="featured-title">
           <div className="featured-index-head" data-reveal><span className="eyebrow">001 / Selected records</span><div><h2 id="featured-title">Featured in the <em>archive.</em></h2><Link href="/accounts" className="featured-index-link">Open full index <ArrowUpRight size={15} /></Link></div></div>
-          {featuredQuery.isLoading ? <div className="featured-loading" aria-label="Loading featured records"><i /><i /></div> : featuredAccounts.length ? <div className="featured-list">{featuredAccounts.map((account, index) => <Link href={`/accounts/${account.slug}`} className="featured-record focus-ring" key={account.id} data-reveal><div className="featured-record-image">{account.image ? <img src={account.image} alt={account.imageAlt} /> : <span>Media pending</span>}<b>{String(index + 1).padStart(2, "0")}</b></div><div className="featured-record-copy"><span>{account.id} / {account.status}</span><h3>{account.title}</h3><p>{account.keyPlayers.slice(0, 3).join(" · ") || "Account details available in record"}</p></div><dl><div><dt>OVR</dt><dd>{account.ovr}</dd></div><div><dt>Coins</dt><dd>{formatQuantity(account.coins)}</dd></div><div><dt>Price</dt><dd>{formatCurrency(account.price, account.currency)}</dd></div></dl><ArrowUpRight size={17} /></Link>)}</div> : <div className="featured-empty" data-reveal><span>Archive signal / Pending</span><p>Featured records will appear here when the APEX operations team marks a published account for the public archive.</p></div>}
+          {featuredQuery.isLoading ? <div className="featured-loading" aria-label="Loading featured records"><i /><i /></div> : featuredAccounts.length ? <div className="featured-list">{featuredAccounts.map((account, index) => <Link href={`/accounts/${account.slug}`} className="featured-record focus-ring" key={account.id} data-reveal><div className="featured-record-image">{account.image ? <img src={account.image} alt={account.imageAlt} /> : <span>Media pending</span>}<b>{String(index + 1).padStart(2, "0")}</b></div><div className="featured-record-copy"><span>{account.id} / {account.status}</span><h3>{account.title}</h3><p>{account.keyPlayers.slice(0, 3).join(" · ") || "Account details available in record"}</p></div><dl><div><dt>OVR</dt><dd>{account.ovr}</dd></div><div><dt>Coins</dt><dd>{formatQuantity(account.coins)}</dd></div><div><dt>Price</dt><dd>{formatCurrency(account.price, account.currency)}</dd></div></dl><ArrowUpRight size={17} /></Link>)}</div> : <div className="featured-empty" data-reveal><span>Archive signal / Pending</span><p>Featured records will appear here when the Elite Traders operations team marks a published account for the public archive.</p></div>}
         </section>
 
         <section className="inspection-flow" id="protocol" aria-labelledby="protocol-title">
@@ -171,7 +171,7 @@ export default function Home() {
             <h2 id="protocol-title">Every important detail,<br /><em>in the right order.</em></h2>
           </div>
           <div className="system-readout" data-reveal>
-            <div className="readout-overline"><span>APEX / Account grammar</span><span>Phase 01</span></div>
+            <div className="readout-overline"><span>Elite Traders / Account grammar</span><span>Phase 01</span></div>
             <p className="readout-statement">Every published listing reads like an inspection record: squad composition first, resources second, identity and context last.</p>
             <div className="grammar-lines">
               <div><span>01</span><strong>Squad</strong><p>Formation, key players, OVR</p></div>
@@ -183,7 +183,7 @@ export default function Home() {
 
         <section className="platform-cut" aria-labelledby="platform-title">
           <div className="cut-image" data-reveal>
-            <img src="/manus-storage/apex-platform-module_326de0da.jpg" alt="Abstract APEX account platform module" />
+            <img src="/manus-storage/apex-platform-module_326de0da.jpg" alt="Abstract Elite Traders account platform module" />
             <span className="cut-image-label">Inventory<br />signal</span>
           </div>
           <div className="cut-copy" data-reveal>
@@ -211,9 +211,9 @@ export default function Home() {
       </main>
 
       <footer className="apex-footer">
-        <div className="footer-brand"><APEXMark /><span>APEX</span></div>
+        <div className="footer-brand"><APEXMark /><span>Elite Traders</span></div>
         <p className="micro-label">FC Mobile account archive / Public index</p>
-        <p>© {new Date().getFullYear()} APEX. Independent public record service; not affiliated with EA or EA SPORTS.</p>
+        <p>© {new Date().getFullYear()} Elite Traders. Independent public record service; not affiliated with EA or EA SPORTS.</p>
       </footer>
 
       {introVisible && (
@@ -221,14 +221,14 @@ export default function Home() {
           <div className="welcome-backdrop" aria-hidden="true"><img src="/manus-storage/apex-welcome-archive_31af4dfa.jpg" alt="" /></div>
           <div className="welcome-grid" aria-hidden="true" />
           <div className="welcome-shell">
-            <div className="welcome-top"><div className="welcome-brand"><APEXMark /><span>APEX</span></div><button type="button" className="skip-button focus-ring" onClick={dismissIntro}>Skip intro</button></div>
+            <div className="welcome-top"><div className="welcome-brand"><APEXMark /><span>Elite Traders</span></div><button type="button" className="skip-button focus-ring" onClick={dismissIntro}>Skip intro</button></div>
             <div className="welcome-copy">
-              <p className="eyebrow welcome-sequence-one">001 / Welcome to APEX</p>
+              <p className="eyebrow welcome-sequence-one">001 / Welcome to Elite Traders</p>
               <h2 id="welcome-title" className="welcome-sequence-two">Your account,<br /><span>in focus.</span></h2>
               <p className="welcome-description welcome-sequence-three">A direct FC Mobile account archive built around squad visibility, ownership and clarity.</p>
-              <button type="button" className="enter-button focus-ring welcome-sequence-four" onClick={dismissIntro}>Enter APEX <ArrowUpRight size={17} /></button>
+              <button type="button" className="enter-button focus-ring welcome-sequence-four" onClick={dismissIntro}>Enter Elite Traders <ArrowUpRight size={17} /></button>
             </div>
-            <p className="welcome-foot micro-label">APEX / Public account archive</p>
+            <p className="welcome-foot micro-label">Elite Traders / Public account archive</p>
           </div>
         </section>
       )}

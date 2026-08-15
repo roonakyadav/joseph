@@ -15,7 +15,7 @@ const Sell = lazy(() => import("./pages/Sell"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function ArchiveRouteLoading() {
-  return <main className="min-h-screen bg-[#0e120f] p-5 text-[#f0f1ea]"><div className="mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-5xl flex-col border border-[#f0f1ea]/15 bg-[#111611] p-6 sm:p-10"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#77d44d]">APEX / Archive relay</p><div className="my-auto"><h1 className="text-3xl font-semibold tracking-[-0.04em]">Opening record index.</h1><p className="mt-3 text-sm text-[#aeb4aa]">Loading the requested archive surface.</p></div></div></main>;
+  return <main className="min-h-screen bg-[#0e120f] p-5 text-[#f0f1ea]"><div className="mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-5xl flex-col border border-[#f0f1ea]/15 bg-[#111611] p-6 sm:p-10"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#77d44d]">Elite Traders / Archive relay</p><div className="my-auto"><h1 className="text-3xl font-semibold tracking-[-0.04em]">Opening record index.</h1><p className="mt-3 text-sm text-[#aeb4aa]">Loading the requested archive surface.</p></div></div></main>;
 }
 function Router() {
   // make sure to consider if you need authentication for certain routes

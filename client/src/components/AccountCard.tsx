@@ -21,7 +21,7 @@ export function AccountCard({ account }: { account: AccountRecord }) {
         </div>
         <div className="account-card-body">
           <div className="account-card-title"><div><p>{account.id}</p><h2>{account.title}</h2></div><span className="card-rank">{account.rank}</span></div>
-          <p className="record-classification">APEX account record / Live inventory status</p>
+          <p className="record-classification">Elite Traders account record / Live inventory status</p>
           <p className="account-players">{account.keyPlayers.join(" · ")}</p>
           <dl className="account-metrics"><div><dt>Coins</dt><dd>{formatQuantity(account.coins)}</dd></div><div><dt>Gems</dt><dd>{formatQuantity(account.gems)}</dd></div><div><dt>Price</dt><dd>{formatCurrency(account.price, account.currency)}</dd></div></dl>
           <div className="account-card-action"><span>{isSold ? "Inspect archive" : "Inspect record"}</span><ArrowUpRight size={15} aria-hidden="true" /></div>

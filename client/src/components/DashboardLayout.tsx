@@ -171,9 +171,9 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="font-mono text-sm font-bold text-[#77d44d]">A</span>
+                  <span className="font-mono text-sm font-bold text-[#77d44d]">E</span>
                   <div className="min-w-0">
-                    <span className="block font-mono text-[11px] tracking-[0.2em] text-[#f0f1ea]">APEX</span>
+                    <span className="block font-mono text-[11px] tracking-[0.2em] text-[#f0f1ea]">Elite Traders</span>
                     <span className="block font-mono text-[8px] tracking-[0.14em] text-[#aeb4aa]">PRIVATE ARCHIVE</span>
                   </div>
                 </div>
@@ -251,7 +251,7 @@ function DashboardLayoutContent({
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <SidebarTrigger className="h-8 w-8 rounded-none border border-[#f0f1ea]/20 bg-transparent text-[#f0f1ea] hover:bg-[#111611]" />
-                <span className="font-mono text-[11px] font-semibold tracking-[0.22em] text-[#f0f1ea]"><b className="mr-1 text-[#77d44d]">A</b>APEX</span>
+                <span className="font-mono text-[11px] font-semibold tracking-[0.22em] text-[#f0f1ea]"><b className="mr-1 text-[#77d44d]">E</b>Elite Traders</span>
               </div>
               <span className="border border-[#f0f1ea]/20 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-[#aeb4aa]">Ops / {String((menuItems.findIndex(item => item.path === location) + 1) || 1).padStart(2, "0")}</span>
             </div>

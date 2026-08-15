@@ -12,6 +12,7 @@ import {
   users,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+import { roleForAuthenticatedEmail } from "./adminPolicy";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -59,12 +60,10 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     updateSet.lastSignedIn = user.lastSignedIn;
   }
 
-  if (user.role !== undefined) {
-    values.role = user.role;
-    updateSet.role = user.role;
-  } else if (user.openId === ENV.ownerOpenId) {
-    values.role = "admin";
-    updateSet.role = "admin";
+  if (user.email !== undefined) {
+    const role = roleForAuthenticatedEmail(user.email);
+    values.role = role;
+    updateSet.role = role;
   }
 
   if (!values.lastSignedIn) values.lastSignedIn = new Date();
@@ -289,7 +288,7 @@ export async function getStoreSettings() {
 }
 
 export const defaultStoreSettings = {
-  storeName: "APEX",
+  storeName: "Elite Traders",
   whatsappNumber: null,
   whatsappCommunityUrl: null,
   defaultCurrency: "USD",

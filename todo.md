@@ -137,3 +137,13 @@
 - [x] Verify the `/accounts` publication-led wording and the dossier-style no-record state after the interrupted patch recovery.
 - [x] Fix the clean-database `/admin/settings` query so `admin.settings.get` always returns defined data and does not trigger a React Query undefined-data error.
 - [x] Add focused regression coverage for the admin settings default/fallback contract.
+
+# Elite Traders Configuration and Authorization
+
+- [x] Inspect current users, roles, server-side authorization, store settings, and user-facing APEX brand surface without altering marketplace data.
+- [x] Restrict server-side admin authorization to roonakyadav1609@gmail.com and elitetradersfcm@gmail.com, while preserving ordinary authenticated users as non-admins.
+- [x] Safely demote any existing users outside the approved two-email admin set without deleting users or marketplace data.
+- [x] Configure the provided official WhatsApp community URL through the existing database-backed store settings model without fabricating contact numbers.
+- [x] Rename all user-facing APEX product branding, metadata, and public/admin copy to Elite Traders while retaining safe internal technical identifiers.
+- [x] Add regression coverage for the two-email admin authorization policy and settings/brand configuration behavior.
+- [x] Validate public pages, metadata, community CTA, admin access boundaries, protected procedures, and the production build; document any OAuth provider-side blocker.

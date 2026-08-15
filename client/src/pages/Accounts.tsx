@@ -29,7 +29,7 @@ function getStoredCatalogState(): StoredCatalogState {
 }
 
 export default function Accounts() {
-  usePageMeta({ title: "Account records — APEX", description: "Browse published FC Mobile account records by OVR, availability, resource fields, and price marker.", path: "/accounts" });
+  usePageMeta({ title: "Account records — Elite Traders", description: "Browse published FC Mobile account records by OVR, availability, resource fields, and price marker.", path: "/accounts" });
   const [stored] = useState(getStoredCatalogState);
   const [search, setSearch] = useState(stored.search ?? "");
   const [quick, setQuick] = useState<QuickFilter>(stored.quick ?? "all");
@@ -87,7 +87,7 @@ export default function Accounts() {
       <ApexCatalogHeader active="accounts" />
       <main className="accounts-main">
         <section className="catalog-intro" aria-labelledby="accounts-title">
-          <div className="catalog-intro-rail"><p className="eyebrow"><i /> APEX / Account archive</p><span>Controlled public index</span></div>
+          <div className="catalog-intro-rail"><p className="eyebrow"><i /> Elite Traders / Account archive</p><span>Controlled public index</span></div>
           <div className="catalog-intro-heading"><div><h1 id="accounts-title">Account<br /><em>records.</em></h1><p>Inspect published squad records, resource context and price detail.</p></div><div className="catalog-count"><strong>{allAccounts.length}</strong><span>Public<br />records</span></div></div>
           <div className="catalog-dossier-rail" aria-label="Catalog classification"><span>Index / 02</span><span>Classification / Published records</span><span>Account object first</span></div>
         </section>
@@ -123,7 +123,7 @@ export default function Accounts() {
 
       <section className={`filter-sheet ${filtersOpen ? "is-open" : ""}`} role="dialog" aria-modal="true" aria-labelledby="filter-sheet-title" aria-hidden={!filtersOpen}>
         <button className="filter-sheet-scrim" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)} />
-        <div className="filter-sheet-body"><div className="filter-sheet-grip" /><div className="filter-sheet-title"><div><p className="eyebrow">APEX / Record filters</p><h2 id="filter-sheet-title">Refine the index</h2></div><button className="filter-close focus-ring" type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={18} /></button></div>
+        <div className="filter-sheet-body"><div className="filter-sheet-grip" /><div className="filter-sheet-title"><div><p className="eyebrow">Elite Traders / Record filters</p><h2 id="filter-sheet-title">Refine the index</h2></div><button className="filter-close focus-ring" type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={18} /></button></div>
           <div className="filter-fields"><label><span>Minimum OVR</span><input type="number" min="0" inputMode="numeric" placeholder="Any" value={minOvr} onChange={(event) => setMinOvr(event.target.value)} /></label><label><span>Maximum price / USD</span><input type="number" min="0" inputMode="numeric" placeholder="Any" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} /></label></div>
           <fieldset className="status-options"><legend>Availability</legend><div><button type="button" className={status === "all" ? "is-selected" : ""} onClick={() => setStatus("all")}>All</button><button type="button" className={status === "available" ? "is-selected" : ""} onClick={() => setStatus("available")}>Available</button><button type="button" className={status === "sold" ? "is-selected" : ""} onClick={() => setStatus("sold")}>Sold</button></div></fieldset>
           <div className="filter-sheet-actions"><button className="sheet-reset focus-ring" type="button" onClick={clearDiscovery}>Reset</button><button className="sheet-apply focus-ring" type="button" onClick={() => setFiltersOpen(false)}>Show {accounts.length} records</button></div>
