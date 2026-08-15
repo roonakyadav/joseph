@@ -147,3 +147,8 @@
 - [x] Rename all user-facing APEX product branding, metadata, and public/admin copy to Elite Traders while retaining safe internal technical identifiers.
 - [x] Add regression coverage for the two-email admin authorization policy and settings/brand configuration behavior.
 - [x] Validate public pages, metadata, community CTA, admin access boundaries, protected procedures, and the production build; document any OAuth provider-side blocker.
+
+# GitHub Delivery
+
+- [x] Identify the intended Joseph repository, current GitHub linkage, and target branch for the verified Elite Traders checkpoint (`roonakyadav/joseph`, new `main` branch).
+- [ ] Confirm the repository push target and synchronize the current verified project revision without changing application code.
