@@ -1,6 +1,17 @@
 // APEX DESIGN: Account Archive — development listings are structured product records, not presentation-specific card data.
 export type AccountStatus = "available" | "sold";
 
+export type AccountMedia = {
+  src: string;
+  alt: string;
+  label: "Concept preview" | "Record image";
+};
+
+export type AccountTransfer = {
+  channel: string;
+  note: string;
+};
+
 export type AccountRecord = {
   id: string;
   slug: string;
@@ -11,6 +22,7 @@ export type AccountRecord = {
   status: AccountStatus;
   image: string;
   imageAlt: string;
+  media: AccountMedia[];
   coins: number;
   gems: number;
   rank: "Gold" | "Elite" | "Legend";
@@ -18,6 +30,8 @@ export type AccountRecord = {
   description: string;
   createdAt: string;
   featured: boolean;
+  classification: "development";
+  transfer: AccountTransfer;
   sellerWhatsapp?: string;
 };
 
@@ -32,6 +46,7 @@ export const accountRecords: AccountRecord[] = [
     status: "available",
     image: "/manus-storage/apex-account-catalyst_60a77997.jpg",
     imageAlt: "Development concept image for the Catalyst XI FC Mobile account",
+    media: [{ src: "/manus-storage/apex-account-catalyst_60a77997.jpg", alt: "Development concept squad image for Catalyst XI", label: "Concept preview" }],
     coins: 2400000000,
     gems: 18000,
     rank: "Legend",
@@ -39,6 +54,8 @@ export const accountRecords: AccountRecord[] = [
     description: "High-end attack core with a balanced midfield structure.",
     createdAt: "2026-08-15T08:00:00.000Z",
     featured: true,
+    classification: "development",
+    transfer: { channel: "Seller channel", note: "Direct handover terms are supplied by the seller when a verified live record is connected." },
   },
   {
     id: "#FC-116-02",
@@ -50,6 +67,7 @@ export const accountRecords: AccountRecord[] = [
     status: "available",
     image: "/manus-storage/apex-account-pressing_87b546d2.jpg",
     imageAlt: "Development concept image for the Pressing Line FC Mobile account",
+    media: [{ src: "/manus-storage/apex-account-pressing_87b546d2.jpg", alt: "Development concept squad image for Pressing Line", label: "Concept preview" }],
     coins: 1320000000,
     gems: 7600,
     rank: "Elite",
@@ -57,6 +75,8 @@ export const accountRecords: AccountRecord[] = [
     description: "A fast press profile with depth across the defensive line.",
     createdAt: "2026-08-13T08:00:00.000Z",
     featured: false,
+    classification: "development",
+    transfer: { channel: "Seller channel", note: "Direct handover terms are supplied by the seller when a verified live record is connected." },
   },
   {
     id: "#FC-113-03",
@@ -68,6 +88,7 @@ export const accountRecords: AccountRecord[] = [
     status: "available",
     image: "/manus-storage/apex-account-counterweight_41bb4c5e.jpg",
     imageAlt: "Development concept image for the Counterweight FC Mobile account",
+    media: [{ src: "/manus-storage/apex-account-counterweight_41bb4c5e.jpg", alt: "Development concept squad image for Counterweight", label: "Concept preview" }],
     coins: 680000000,
     gems: 3100,
     rank: "Gold",
@@ -75,6 +96,8 @@ export const accountRecords: AccountRecord[] = [
     description: "Value-forward squad with a mature control spine.",
     createdAt: "2026-08-10T08:00:00.000Z",
     featured: false,
+    classification: "development",
+    transfer: { channel: "Seller channel", note: "Direct handover terms are supplied by the seller when a verified live record is connected." },
   },
   {
     id: "#FC-115-04",
@@ -86,6 +109,7 @@ export const accountRecords: AccountRecord[] = [
     status: "sold",
     image: "/manus-storage/apex-account-archive_bb27ab65.jpg",
     imageAlt: "Development concept image for the Archive Eleven FC Mobile account",
+    media: [{ src: "/manus-storage/apex-account-archive_bb27ab65.jpg", alt: "Development concept squad image for Archive Eleven", label: "Concept preview" }],
     coins: 910000000,
     gems: 5200,
     rank: "Elite",
@@ -93,6 +117,8 @@ export const accountRecords: AccountRecord[] = [
     description: "An archived sold listing retained as a format reference.",
     createdAt: "2026-08-07T08:00:00.000Z",
     featured: false,
+    classification: "development",
+    transfer: { channel: "Archive only", note: "This archived sold record has no active seller-contact or handover channel." },
   },
 ];
 

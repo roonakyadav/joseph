@@ -79,3 +79,6 @@ The mark is a **sharp, rising A-form built from two tapered pitch-green planes**
 - Every account card, price-bearing specimen and account record must visibly declare **Concept preview**, **Development record**, or **Verified live record**. Development data may never read as active verified inventory.
 - **APEX Pitch Green** is reserved for active availability, a primary action and one focal metric per viewport. Prices, secondary data, archive rails and decorative emphasis default to off-white or muted stone.
 - Catalog language uses index, archive and inspection vocabulary. Generic marketplace wording is deferred until a genuine seller-contact or purchase flow is live.
+- Archived or sold records never use **APEX Pitch Green** for OVR, price, status, or primary emphasis; their dominant state language uses muted stone and off-white.
+- Every account-detail route reads as one continuous inspected dossier: major sections receive archive rails, index labels, registration marks, or stamped states rather than generic stacked-card rhythm.
+- Related account modules are treated as archive index entries; record ID, preview status, OVR and inspection language take priority over conventional recommendation styling.

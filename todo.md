@@ -21,3 +21,16 @@
 - [x] Connect Home and catalog navigation without breaking the established Account Archive header language.
 - [x] Validate search, filters, sorting, card actions, detail route, and 360/375/390/412px layouts before desktop expansion.
 - [x] Run production checks, visual review, checkpoint, and delivery.
+
+# APEX Premium Account Detail
+
+- [x] Finish reviewing the complete account-detail brief and record the scoped product decisions.
+- [x] Extend the development Account model with truthful gallery, squad, specification, transfer, and seller-contact fields.
+- [x] Rebuild the mobile account hero so gallery imagery is the first product signal, followed by identity, OVR, status, price, and action.
+- [x] Add swipeable gallery, pagination, missing-image handling, fullscreen lightbox, Escape behavior, focus restoration, and scroll locking.
+- [x] Build premium specs, key-player, factual account-summary, and transfer-information sections using only populated data.
+- [x] Create an honest configurable WhatsApp handoff with contextual messaging, plus a safe no-contact state.
+- [x] Add a safe-area-aware sticky mobile conversion bar and an appropriate archived sold-state alternative.
+- [x] Add a compact related-account continuation module with data-derived suggestions.
+- [x] Validate normal, sold, missing, gallery, lightbox, WhatsApp, and 360/375/390/412px flows before desktop expansion.
+- [x] Run final build, visual review, checkpoint, and delivery.
