@@ -8,6 +8,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Accounts from "./pages/Accounts";
 import AccountRoute from "./pages/AccountRoute";
 import Proofs from "./pages/Proofs";
+import Sell from "./pages/Sell";
 import Home from "./pages/Home";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/accounts" component={Accounts} />
       <Route path="/accounts/:slug" component={AccountRoute} />
       <Route path="/proofs" component={Proofs} />
+      <Route path="/sell" component={Sell} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

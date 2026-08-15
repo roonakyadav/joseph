@@ -46,3 +46,15 @@
 - [x] Build an accessible fullscreen proof viewer with keyboard, touch, focus, zoom, lock-scroll, and reduced-motion support.
 - [x] Validate development, empty, missing-image, related-account, viewer, and 360/375/390/412px mobile states before desktop expansion.
 - [x] Run production checks, visual review, checkpoint, and delivery.
+
+# APEX Seller Intake
+
+- [x] Finish reviewing the seller-intake brief and record the required privacy, review, and non-publishing constraints.
+- [x] Define a presentation-independent seller-submission model and a clearly temporary service boundary without localStorage persistence.
+- [x] Add the `/sell` route and connect it to live APEX navigation and relevant entry points.
+- [x] Build the compact mobile seller-intake introduction and four-stage review expectation sequence.
+- [x] Implement the account profile form with useful required/optional field labeling and field-level validation.
+- [x] Build client-side evidence selection, preview, removal, reorder, image constraints, and no-sensitive-secrets guidance.
+- [x] Implement an honest temporary submission handoff and complete confirmation screen that does not claim a listing or review decision.
+- [x] Validate normal, validation-error, image-preview, confirmation, missing-contact, and 360/375/390/412px mobile states before desktop expansion.
+- [x] Run production checks, visual review, checkpoint, and delivery.

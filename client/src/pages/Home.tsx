@@ -7,7 +7,6 @@ import "./Home.css";
 const APEX_WHATSAPP_URL = "";
 
 const futureRoutes = [
-  ["03", "Sell", "Submission protocol"],
   ["05", "Community", "Official channel"],
 ];
 
@@ -110,6 +109,7 @@ export default function Home() {
         </div>
         <div className="index-future">
           <Link href="/accounts" onClick={() => setMenuOpen(false)} className="index-live-route"><span>02</span><strong>Accounts</strong><p>Development catalog</p><i>Open</i></Link>
+          <Link href="/sell" onClick={() => setMenuOpen(false)} className="index-live-route"><span>03</span><strong>Sell</strong><p>Submission protocol</p><i>Open</i></Link>
           <Link href="/proofs" onClick={() => setMenuOpen(false)} className="index-live-route"><span>04</span><strong>Proofs</strong><p>Evidence archive</p><i>Open</i></Link>
           {futureRoutes.map(([index, name, state]) => (
             <div key={name}><span>{index}</span><strong>{name}</strong><p>{state}</p></div>

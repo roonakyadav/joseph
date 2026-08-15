@@ -86,3 +86,6 @@ The mark is a **sharp, rising A-form built from two tapered pitch-green planes**
 - Long evidence sequences deliberately alternate lead specimens, indexed entries, archive rails, stamps and registration marks instead of relying on uniform card stacking.
 - Display headlines retain intentional editorial line breaks and readable breathing room; Manrope’s intensity comes from scale and phrasing, never excessive compression.
 - Development and published proof surfaces use **privacy review** vocabulary. A sample remains a labelled, privacy-safe specimen until permissioned authentic material is supplied.
+- Seller-intake pages are **review protocol dossiers**, not conventional forms: long field sequences alternate account-file rails, evidence trays, inspection stamps, and indexed record groupings.
+- The rising A-form appears on every major submission or review surface as an **inspection seal / record identifier**, not only as a header brand mark.
+- Seller-facing copy prioritizes composed review vocabulary—**submission**, **record**, **review**, **evidence**, and **contact channel**—over marketplace hype or self-publishing language.
