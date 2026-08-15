@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
+import "./AdminLight.css";
 
 type AccountMediaRecord = { id: string; url: string; alt: string; isPrimary: boolean; sortOrder: number };
 type AccountRecord = {
@@ -351,8 +352,8 @@ function AdminWorkspace() {
 export default function Admin() {
   usePageMeta({ title: "Private operations — Elite Traders", description: "Private Elite Traders operations workspace.", path: "/admin", noIndex: true });
   const { user, loading } = useAuth();
-  if (loading) return <div className="grid min-h-screen place-items-center bg-[#0e120f] text-[#f0f1ea]"><Loader2 className="h-5 w-5 animate-spin text-[#77d44d]" /></div>;
-  if (!user) return <div className="grid min-h-screen place-items-center bg-[#0e120f] p-6 text-center text-[#f0f1ea]"><div className="max-w-md border border-[#f0f1ea]/15 bg-[#111611] p-7"><ShieldCheck className="mx-auto h-6 w-6 text-[#77d44d]" /><h1 className="mt-4 text-2xl font-semibold">Private Elite Traders operations</h1><p className="mt-3 text-sm leading-6 text-[#aeb4aa]">Sign in to check whether your authenticated account has operations access.</p><div className="mt-6"><ActionButton onClick={() => startLogin()}>Sign in</ActionButton></div></div></div>;
-  if (user.role !== "admin") return <div className="grid min-h-screen place-items-center bg-[#0e120f] p-6 text-center text-[#f0f1ea]"><div className="max-w-md border border-[#f97969]/35 bg-[#111611] p-7"><CircleOff className="mx-auto h-6 w-6 text-[#f97969]" /><h1 className="mt-4 text-2xl font-semibold">Operations access restricted</h1><p className="mt-3 text-sm leading-6 text-[#aeb4aa]">This authenticated account does not have the administrative role required for private Elite Traders operations.</p><Link href="/" className="mt-6 inline-flex min-h-10 items-center gap-2 border border-[#f0f1ea]/20 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#f0f1ea] hover:border-[#77d44d] hover:text-[#77d44d]"><ChevronLeft className="h-3 w-3" />Return to Elite Traders</Link></div></div>;
-  return <DashboardLayout><AdminWorkspace /></DashboardLayout>;
+  if (loading) return <div className="grid min-h-screen place-items-center bg-[#f4f9f2] text-[#17301d]"><Loader2 className="h-5 w-5 animate-spin text-[#4fba32]" /></div>;
+  if (!user) return <div className="grid min-h-screen place-items-center bg-[#f4f9f2] p-6 text-center text-[#17301d]"><div className="max-w-md border border-[#17301d]/15 bg-white p-7 shadow-[0_1rem_2rem_rgba(25,55,31,0.06)]"><ShieldCheck className="mx-auto h-6 w-6 text-[#4fba32]" /><h1 className="mt-4 text-2xl font-semibold">Private Elite Traders operations</h1><p className="mt-3 text-sm leading-6 text-[#607161]">Sign in to check whether your authenticated account has operations access.</p><div className="mt-6"><ActionButton onClick={() => startLogin()}>Sign in</ActionButton></div></div></div>;
+  if (user.role !== "admin") return <div className="grid min-h-screen place-items-center bg-[#f4f9f2] p-6 text-center text-[#17301d]"><div className="max-w-md border border-[#b65b2f]/35 bg-white p-7 shadow-[0_1rem_2rem_rgba(25,55,31,0.06)]"><CircleOff className="mx-auto h-6 w-6 text-[#b65b2f]" /><h1 className="mt-4 text-2xl font-semibold">Operations access restricted</h1><p className="mt-3 text-sm leading-6 text-[#607161]">This authenticated account does not have the administrative role required for private Elite Traders operations.</p><Link href="/" className="mt-6 inline-flex min-h-10 items-center gap-2 border border-[#17301d]/20 bg-white px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#17301d] hover:border-[#4fba32] hover:text-[#419b2b]"><ChevronLeft className="h-3 w-3" />Return to Elite Traders</Link></div></div>;
+  return <DashboardLayout><div className="admin-light"><AdminWorkspace /></div></DashboardLayout>;
 }

@@ -1,4 +1,4 @@
-// APEX DESIGN: Account Archive — keep the application shell dark, quiet, and product-document focused.
+// Elite Traders design: bright, spacious account archive with restrained green emphasis.
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
@@ -46,9 +46,9 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <Toaster theme="dark" />
+          <Toaster theme="light" />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

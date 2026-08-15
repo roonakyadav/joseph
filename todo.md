@@ -234,3 +234,13 @@
 - [x] Inspect the application title configuration and current hosting-domain configuration for remaining apex-based naming.
 - [x] Update the application-controlled website title to Elite Traders and validate the configuration without changing unrelated brand or product behavior.
 - [ ] Document and complete, where supported, the safe hosted-domain change from the current apex-based URL prefix to an Elite Traders URL.
+
+# Elite Traders Full-Site Light Theme
+
+- [x] Audit centralized color tokens, global CSS, page styles, shared components, and current mobile/desktop rendering for dark-theme assumptions.
+- [x] Establish a refined shared light surface, charcoal text, subtle border, shadow, focus, and Elite Traders green accent token system without adding a theme toggle.
+- [x] Transform the public Home, Accounts, Account Detail, Sell, and Proofs routes along with their empty, error, and loading presentations to the light theme.
+- [x] Transform the shared header, footer, floating mobile navigation, Thinking Nine loader, and shared interactive controls for the light theme while preserving all behavior.
+- [x] Transform the complete protected Admin workspace, including dashboard, accounts, submissions, proofs, settings, forms, tables, dialogs, and status surfaces.
+- [x] Verify all public and protected routes at narrow mobile, tablet, and desktop sizes for contrast, focus visibility, overflow, navigation overlap, loader visibility, and unchanged functionality.
+- [ ] Run full checks and tests, inspect staged diffs, commit and push each verified logical light-theme stage to `roonakyadav/joseph` without force-pushing.

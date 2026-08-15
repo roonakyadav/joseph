@@ -173,8 +173,8 @@ function DashboardLayoutContent({
                 <div className="flex min-w-0 items-center gap-2">
                   <span className="font-mono text-sm font-bold text-[#77d44d]">E</span>
                   <div className="min-w-0">
-                    <span className="block font-mono text-[11px] tracking-[0.2em] text-[#f0f1ea]">Elite Traders</span>
-                    <span className="block font-mono text-[8px] tracking-[0.14em] text-[#aeb4aa]">PRIVATE ARCHIVE</span>
+                    <span className="block font-mono text-[11px] tracking-[0.2em] text-[#17301d]">Elite Traders</span>
+                    <span className="block font-mono text-[8px] tracking-[0.14em] text-[#607161]">PRIVATE ARCHIVE</span>
                   </div>
                 </div>
               ) : null}
@@ -247,21 +247,21 @@ function DashboardLayoutContent({
 
       <SidebarInset>
         {isMobile && (
-          <div className="sticky top-0 z-40 border-b border-[#f0f1ea]/15 bg-[#0e120f] px-4 py-3 text-[#f0f1ea]">
+          <div className="sticky top-0 z-40 border-b border-[#17301d]/15 bg-white px-4 py-3 text-[#17301d] shadow-sm">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <SidebarTrigger className="h-8 w-8 rounded-none border border-[#f0f1ea]/20 bg-transparent text-[#f0f1ea] hover:bg-[#111611]" />
-                <span className="font-mono text-[11px] font-semibold tracking-[0.22em] text-[#f0f1ea]"><b className="mr-1 text-[#77d44d]">E</b>Elite Traders</span>
+                <SidebarTrigger className="h-8 w-8 rounded-none border border-[#17301d]/20 bg-transparent text-[#17301d] hover:bg-[#f2f9ef]" />
+                <span className="font-mono text-[11px] font-semibold tracking-[0.22em] text-[#17301d]"><b className="mr-1 text-[#4fba32]">E</b>Elite Traders</span>
               </div>
-              <span className="border border-[#f0f1ea]/20 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-[#aeb4aa]">Ops / {String((menuItems.findIndex(item => item.path === location) + 1) || 1).padStart(2, "0")}</span>
+              <span className="border border-[#17301d]/20 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-[#607161]">Ops / {String((menuItems.findIndex(item => item.path === location) + 1) || 1).padStart(2, "0")}</span>
             </div>
-            <div className="mt-2 flex items-center justify-between border-t border-[#f0f1ea]/10 pt-2 font-mono text-[9px] uppercase tracking-[0.14em] text-[#aeb4aa]">
+            <div className="mt-2 flex items-center justify-between border-t border-[#17301d]/10 pt-2 font-mono text-[9px] uppercase tracking-[0.14em] text-[#607161]">
               <span>Private archive</span>
-              <span className="text-[#77d44d]">{activeMenuItem?.label ?? "Dashboard"}</span>
+              <span className="text-[#419b2b]">{activeMenuItem?.label ?? "Dashboard"}</span>
             </div>
           </div>
         )}
-        <main className="min-h-screen flex-1 bg-[#0e120f] p-4 text-[#f0f1ea] md:p-6">{children}</main>
+        <main className="min-h-screen flex-1 bg-[#f4f9f2] p-4 text-[#17301d] md:p-6">{children}</main>
       </SidebarInset>
     </>
   );
