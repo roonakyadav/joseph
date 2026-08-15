@@ -147,11 +147,11 @@ export default function Home() {
               <span className="artifact-corner corner-two" />
               <div className="artifact-scan" aria-hidden="true" />
             </div>
-            <dl className="account-readout">
-              <div><dt>OVR</dt><dd>—</dd><small>Record field</small></div>
-              <div><dt>Coins</dt><dd>—</dd><small>Resource field</small></div>
-              <div><dt>Gems</dt><dd>—</dd><small>Resource field</small></div>
-              <div><dt>Status</dt><dd>Index</dd><small>Archive overview</small></div>
+            <dl className="account-readout platform-readout" aria-label="Elite Traders platform information">
+              <div><dt>Buy</dt><dd>Find FC Mobile accounts</dd></div>
+              <div><dt>Sell</dt><dd>List your FC Mobile account</dd></div>
+              <div><dt>Proofs</dt><dd>See transaction evidence</dd></div>
+              <div><dt>Community</dt><dd>{communityUrl ? <a href={communityUrl} target="_blank" rel="noreferrer" onClick={() => trackApexEvent("community_open")}>Join the community</a> : "Official community"}</dd></div>
             </dl>
             <p className="artifact-footnote">This archive visual is an interface specimen, not a live account listing.</p>
           </article>

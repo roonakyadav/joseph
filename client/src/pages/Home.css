@@ -1,4 +1,5 @@
 /* APEX DESIGN: Account Archive 02 — product artifact leads, technical metadata structures the narrative, no generic card-stack language. */
+.account-artifact .platform-readout > div { min-height: 5.25rem; }.account-artifact .platform-readout dd { margin: 0.42rem 0 0; color: #d7dcd5; font-size: 0.64rem; font-weight: 560; letter-spacing: -0.02em; line-height: 1.32; }.account-artifact .platform-readout > div:last-child dd { color: #d7dcd5; font-size: 0.64rem; letter-spacing: -0.02em; }.account-artifact .platform-readout a { color: #c7f2b4; text-decoration: none; }.account-artifact .platform-readout a:hover { color: var(--apex-green); }
 .apex-page {
   --apex-black: #0e120f;
   --apex-deep: #080b09;
